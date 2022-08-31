@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -19,7 +19,7 @@ const db = require("./app/models");
 db.mongoose
     .connect(db.url, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
     })
     .then(() => {
         console.log("Connected to the database!");
@@ -31,10 +31,11 @@ db.mongoose
 
 // simple route
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to bezkoder application." });
+    res.json({ message: "Welcome to API Pegadaian" });
 });
 
 require("./app/routes/tutorial.routes")(app);
+require("./app/routes/akad.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

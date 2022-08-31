@@ -6,6 +6,7 @@ mongoose.Promise = global.Promise;
 const db = {};
 db.mongoose = mongoose;
 db.url = dbConfig.url;
+db.database = "pegadaian";
 db.tutorials = require("./tutorial.model.js")(mongoose);
 db.akads = require("./akad.model.js")(mongoose);
 

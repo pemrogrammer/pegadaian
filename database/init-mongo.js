@@ -1,12 +1,8 @@
-db = db.getSiblingDB('mongodb');
+db = db.getSiblingDB('pegadaian');
 
-db.createCollection('sample_collection');
+db.createCollection('akads');
 
-db.createUser({
-    user: "root",
-    pwd: "root",
-    roles: [{
-        role: "readWrite",
-        db: "mongodb"
-    }]
-});
+db.akads.insertMany([{
+    name_item: 'Samsung M21',
+    type_item: 'Handphone',
+}, ]);

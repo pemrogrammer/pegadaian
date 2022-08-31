@@ -10,19 +10,27 @@ import NasabahAkad from "./partials/nasabah-akad";
 import { PreviewCard } from "../../components/Component";
 import { getCoba } from "../../store/datatable";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchAkad, insertAllData } from "../../store/akad";
 
 const Akad = () => {
   const [activeAltTab, setActiveAltTab] = useState("1");
+  const stateAkad = useSelector((state) => state.akad);
+  // const getAkad = await fetchAkad();
   const dispatch = useDispatch();
-  const coba = useSelector(getCoba);
 
   const toggleAltTab = (alttab) => {
     if (activeAltTab !== alttab) setActiveAltTab(alttab);
   };
 
-  useEffect(() => {
-    console.info(coba);
+  useEffect(async () => {
+    await fetchAkad().then((responses) => {
+      dispatch(insertAllData({ allData: responses.data }));
+    });
   }, []);
+
+  useEffect(() => {
+    console.info(stateAkad);
+  }, [stateAkad]);
 
   return (
     <>
