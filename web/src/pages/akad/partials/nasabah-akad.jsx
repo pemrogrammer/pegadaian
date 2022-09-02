@@ -16,9 +16,15 @@ const NasabahAkad = () => {
     columns: [
       {
         name: "Nama",
-        selector: (row) => row.name,
+        selector: (row) => row.name_item,
         sortable: true,
-        field: "name",
+        field: "name_item",
+      },
+      {
+        name: "Jenis Barang",
+        selector: (row) => row.type_item,
+        sortable: true,
+        field: "type_item",
       },
       {
         name: "No. telp",
@@ -71,10 +77,7 @@ const NasabahAkad = () => {
     ],
   });
 
-  useEffect(() => {
-    // dispatch(insertData({ data: stateAkad.allData, nameTable: "nasabahAkadAllData" }));
-    dispatch(insertData({ data: [], nameTable: "nasabahAkadAllData" }));
-  }, []);
+  useEffect(() => {}, []);
 
   const toggleAltTab = (alttab) => {
     if (activeAltTab !== alttab) setActiveAltTab(alttab);

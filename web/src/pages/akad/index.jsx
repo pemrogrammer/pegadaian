@@ -8,9 +8,11 @@ import Head from "../../layout/head/Head";
 import Content from "../../layout/content/Content";
 import NasabahAkad from "./partials/nasabah-akad";
 import { PreviewCard } from "../../components/Component";
-import { getCoba } from "../../store/datatable";
+import { insertData } from "../../store/datatable";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAkad, insertAllData } from "../../store/akad";
+import AkadJatuhTempo from "./partials/akad-jatuh-tempo";
+import PelunasanLelang from "./partials/pelunasan-lelang";
 
 const Akad = () => {
   const [activeAltTab, setActiveAltTab] = useState("1");
@@ -25,11 +27,12 @@ const Akad = () => {
   useEffect(async () => {
     await fetchAkad().then((responses) => {
       dispatch(insertAllData({ allData: responses.data }));
+      dispatch(insertData({ data: responses.data, nameTable: "nasabahAkadAllData" }));
     });
   }, []);
 
   useEffect(() => {
-    console.info(stateAkad);
+    // console.info(stateAkad);
   }, [stateAkad]);
 
   return (
@@ -87,21 +90,10 @@ const Akad = () => {
                       <NasabahAkad />
                     </TabPane>
                     <TabPane tabId="2">
-                      <p>
-                        Culpa dolor voluptate do laboris laboris irure reprehenderit id incididunt duis pariatur mollit
-                        aute magna pariatur consectetur. Eu veniam duis non ut dolor deserunt commodo et minim in quis
-                        laboris ipsum velit id veniam. Quis ut consectetur adipisicing officia excepteur non sit. Ut et
-                        elit aliquip labore Lorem enim eu. Ullamco mollit occaecat dolore ipsum id officia mollit qui
-                        esse anim eiusmod do sint minim consectetur qui.
-                      </p>
+                      <AkadJatuhTempo />
                     </TabPane>
                     <TabPane tabId="3">
-                      <p>
-                        Fugiat id quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad
-                        proident laboris ullamco esse anim Lorem Lorem veniam quis Lorem irure occaecat velit nostrud
-                        magna nulla. Velit et et proident Lorem do ea tempor officia dolor. Reprehenderit Lorem aliquip
-                        labore est magna commodo est ea veniam consectetur.
-                      </p>
+                      <PelunasanLelang />
                     </TabPane>
                   </TabContent>
                 </PreviewCard>
