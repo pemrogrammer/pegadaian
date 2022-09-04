@@ -8,10 +8,10 @@ const PelunasanLelang = () => {
     loading: false,
     columns: [
       {
-        name: "Nama",
-        selector: (row) => row.name_item,
+        name: "Nama Pelanggan",
+        selector: (row) => row.name_customer,
         sortable: true,
-        field: "name_item",
+        field: "name_customer",
       },
       {
         name: "Jenis Barang",
@@ -33,33 +33,33 @@ const PelunasanLelang = () => {
       },
       {
         name: "Jaminan",
-        selector: (row) => row.nama_barang,
+        selector: (row) => row.insurance_item,
         sortable: true,
-        field: "nama_barang",
+        field: "insurance_item",
       },
       {
         name: "Pinjaman",
-        selector: (row) => row.pinjaman,
+        selector: (row) => row.loan,
         sortable: true,
-        field: "pinjaman",
+        field: "loan",
       },
       {
         name: "Biaya Titip Terbayar",
-        selector: (row) => row.biaya_titip_terbayar,
+        selector: (row) => row.deposit_fee_paid,
         sortable: true,
-        field: "biaya_titip_terbayar",
+        field: "deposit_fee_paid",
       },
       {
         name: "Tanggal Akad",
-        selector: (row) => row.tanggal_akad,
+        selector: (row) => row.date_contract,
         sortable: true,
-        field: "tanggal_akad",
+        field: "date_contract",
       },
       {
         name: "Tanggal Pelunasan",
-        selector: (row) => row.tanggal_pelunasan,
+        selector: (row) => row.payment_date,
         sortable: true,
-        field: "tanggal_pelunasan",
+        field: "payment_date",
       },
     ],
     types: [
@@ -104,7 +104,7 @@ const PelunasanLelang = () => {
               </div>
             </Col>
             <Col sm="2">
-              <Button outline color="info" onClick={() => onFilter()}>
+              <Button color="primary" onClick={() => onFilter()}>
                 <span>Pilih</span>
                 {state.loading && <Icon name="loader" />}
               </Button>
@@ -114,7 +114,7 @@ const PelunasanLelang = () => {
           <ReactDataTable
             columns={state.columns}
             keyColumns={state.columns.map((item) => item.field)}
-            nameTable="nasabahAkadJatuhTempo"
+            nameTable="pelunasanLelang"
             expandableRows
             pagination
           />

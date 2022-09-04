@@ -10,14 +10,13 @@ import NasabahAkad from "./partials/nasabah-akad";
 import { PreviewCard } from "../../components/Component";
 import { insertData } from "../../store/datatable";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAkad, insertAllData } from "../../store/akad";
+import { fetchAllCustomerContract, fetchContractDueDate, fetchKeelAuction, insertAllData } from "../../store/akad";
 import AkadJatuhTempo from "./partials/akad-jatuh-tempo";
 import PelunasanLelang from "./partials/pelunasan-lelang";
 
 const Akad = () => {
   const [activeAltTab, setActiveAltTab] = useState("1");
   const stateAkad = useSelector((state) => state.akad);
-  // const getAkad = await fetchAkad();
   const dispatch = useDispatch();
 
   const toggleAltTab = (alttab) => {
@@ -25,9 +24,18 @@ const Akad = () => {
   };
 
   useEffect(async () => {
-    await fetchAkad().then((responses) => {
+    await fetchAllCustomerContract().then((responses) => {
       dispatch(insertAllData({ allData: responses.data }));
+
       dispatch(insertData({ data: responses.data, nameTable: "nasabahAkadAllData" }));
+    });
+
+    await fetchContractDueDate().then((responses) => {
+      dispatch(insertData({ data: responses.data, nameTable: "akadJatuhTempo" }));
+    });
+
+    await fetchKeelAuction().then((responses) => {
+      dispatch(insertData({ data: responses.data, nameTable: "pelunasanLelang" }));
     });
   }, []);
 

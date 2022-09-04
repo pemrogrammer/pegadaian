@@ -7,10 +7,10 @@ const AkadJatuhTempo = () => {
     headColor: "light",
     columns: [
       {
-        name: "Nama",
-        selector: (row) => row.name_item,
+        name: "Nama Pelanggan",
+        selector: (row) => row.name_customer,
         sortable: true,
-        field: "name_item",
+        field: "name_customer",
       },
       {
         name: "Jenis Barang",
@@ -27,44 +27,47 @@ const AkadJatuhTempo = () => {
       {
         name: "ID",
         selector: (row) => row.no_id,
+        width: "100px",
         sortable: true,
         field: "no_id",
       },
       {
         name: "Jaminan",
-        selector: (row) => row.nama_barang,
+        selector: (row) => row.insurance_item,
         sortable: true,
-        field: "nama_barang",
+        field: "insurance_item",
       },
       {
         name: "Pinjaman",
-        selector: (row) => row.pinjaman,
+        selector: (row) => row.loan,
         sortable: true,
-        field: "pinjaman",
+        field: "loan",
       },
       {
         name: "Biaya Titip Terbayar",
-        selector: (row) => row.biaya_titip_terbayar,
+        selector: (row) => row.deposit_fee_paid,
         sortable: true,
-        field: "biaya_titip_terbayar",
+        field: "deposit_fee_paid",
+        width: "200px",
       },
       {
         name: "Tunggakan",
-        selector: (row) => row.tunggakan,
+        selector: (row) => row.arrears,
         sortable: true,
-        field: "tunggakan",
+        field: "arrears",
       },
       {
         name: "Tanggal Akad",
-        selector: (row) => row.tanggal_akad,
+        selector: (row) => row.date_contract,
         sortable: true,
-        field: "tanggal_akad",
+        field: "date_contract",
       },
       {
-        name: "Jatuh Tempo",
-        selector: (row) => row.jatuh_tempo,
+        name: "Tanggal Jatuh Tempo",
+        selector: (row) => row.due_date,
         sortable: true,
-        field: "jatuh_tempo",
+        field: "due_date",
+        width: "200px",
       },
     ],
     types: [
@@ -119,7 +122,7 @@ const AkadJatuhTempo = () => {
               </div>
             </Col>
             <Col sm="2">
-              <Button outline color="info" onClick={onFilter}>
+              <Button color="primary" onClick={onFilter}>
                 Pilih
               </Button>
             </Col>
@@ -128,7 +131,7 @@ const AkadJatuhTempo = () => {
           <ReactDataTable
             columns={state.columns}
             keyColumns={state.columns.map((item) => item.field)}
-            nameTable="nasabahAkadJatuhTempo"
+            nameTable="akadJatuhTempo"
             expandableRows
             pagination
           />

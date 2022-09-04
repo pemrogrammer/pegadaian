@@ -19,9 +19,9 @@ const akad = createSlice({
     },
 });
 
-export const fetchAkad = async() => {
+export const fetchAllCustomerContract = async() => {
     // return state.akad;
-    return await customAxios.get('api/v1/akad', {
+    return await customAxios.get('v1/akad/all-customer-contract', {
             // params: {
             //     ID: 12345
             // }
@@ -33,8 +33,32 @@ export const fetchAkad = async() => {
         .catch((errors) => {
             console.log(errors);
         });
+}
 
+export const fetchContractDueDate = async() => {
+    // return state.akad;
+    return await customAxios
+        .get('v1/akad/contract-due-date')
+        .then((responses) => {
+            // return responses.data;
+            return responses;
+        })
+        .catch((errors) => {
+            console.log(errors);
+        });
+}
 
+export const fetchKeelAuction = async() => {
+    // return state.akad;
+    return await customAxios
+        .get('v1/akad/keel-auction')
+        .then((responses) => {
+            // return responses.data;
+            return responses;
+        })
+        .catch((errors) => {
+            console.log(errors);
+        });
 }
 
 export const { insertAllData } = akad.actions;
