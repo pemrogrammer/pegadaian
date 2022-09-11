@@ -6,13 +6,13 @@ import { Block, BlockHead, BlockHeadContent } from "../../components/block/Block
 import classnames from "classnames";
 import Head from "../../layout/head/Head";
 import Content from "../../layout/content/Content";
-import NasabahAkad from "./partials/nasabah-akad";
 import { PreviewCard } from "../../components/Component";
 import { insertData } from "../../store/datatable";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllCustomerContract, fetchContractDueDate, fetchKeelAuction, insertAllData } from "../../store/akad";
-import AkadJatuhTempo from "./partials/akad-jatuh-tempo";
-import PelunasanLelang from "./partials/pelunasan-lelang";
+import { fetchAllCustomerContract, fetchContractDueDate, fetchKeelAuction, onInsertAllData } from "../../store/akad";
+import TableNasabahAkad from "./partials/table-nasabah-akad";
+import TablePelunasanLelang from "./partials/table-pelunasan-lelang";
+import TableAkadJatuhTempo from "./partials/table-akad-jatuh-tempo";
 
 const Akad = () => {
   const [activeAltTab, setActiveAltTab] = useState("1");
@@ -25,7 +25,7 @@ const Akad = () => {
 
   useEffect(async () => {
     await fetchAllCustomerContract().then((responses) => {
-      dispatch(insertAllData({ allData: responses.data }));
+      dispatch(onInsertAllData({ allData: responses.data }));
 
       dispatch(insertData({ data: responses.data, nameTable: "nasabahAkadAllData" }));
     });
@@ -95,13 +95,13 @@ const Akad = () => {
                   </Nav>
                   <TabContent activeTab={activeAltTab}>
                     <TabPane tabId="1">
-                      <NasabahAkad />
+                      <TableNasabahAkad />
                     </TabPane>
                     <TabPane tabId="2">
-                      <AkadJatuhTempo />
+                      <TableAkadJatuhTempo />
                     </TabPane>
                     <TabPane tabId="3">
-                      <PelunasanLelang />
+                      <TablePelunasanLelang />
                     </TabPane>
                   </TabContent>
                 </PreviewCard>

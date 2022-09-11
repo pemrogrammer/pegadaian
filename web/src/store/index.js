@@ -3,8 +3,12 @@ import akad from "./akad";
 import datatable from "./datatable";
 
 export default configureStore({
-  reducer: {
-    akad: akad,
-    datatable: datatable,
-  },
+    reducer: {
+        akad: akad,
+        datatable: datatable,
+    },
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
 });
