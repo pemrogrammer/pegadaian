@@ -15,19 +15,19 @@ const defaultState = {
     },
     forms: {
         discont: 10000,
-        margin: {
-            "electronic": 10, // 10%
-            "vehicle": 5, // 5%
-        },
         number_id: null,
         time_period: 7,
         start_contract: null,
         end_contract: null,
         type_item: "electronic",
+        type_sub_item: "smartphone",
         value_etc: null,
         payment_method: 1,
         mentioned_marhun_bih: null,
         deposit_fee: null,
+        admin_fee: "Rp. 10.0000",
+        deposit_fee_paid: 0,
+        deposit_fee_paid_total: null,
     },
     lists: {
         time_periods: [{
@@ -84,6 +84,16 @@ const defaultState = {
             },
         ],
         deposit_fee_paids: [],
+    },
+    settings: {
+        margin: {
+            "electronic": 5, // 5%
+            "vehicle": 10, // 10%
+        },
+        admin_fee: {
+            "electronic": 10000,
+            "vehicle": 50000,
+        }
     }
 }
 
@@ -107,12 +117,19 @@ const akad = createSlice({
         },
         onChangeDepositFeePaid(state, action) {
             state.lists.deposit_fee_paids = conditionDepositeFeePaid({ time_period: state.forms.time_period, payment_method: state.forms.payment_method });
+            state.forms.deposit_fee_paid = 0;
         },
         onChangeDepositFee(state, action) {
             state.forms.deposit_fee = conditionDepositFee(state);
         },
         onChangePaymentMethod(state, action) {
             state.lists.payment_methods = conditionPaymentMethod({ time_period: state.forms.time_period });
+        },
+        onChangeDepositFeePaidTotal(state, action) {
+            state.forms.deposit_fee_paid_total = conditionDepositFeePaidTotal({ deposit_fee_paid: state.forms.deposit_fee_paid, deposit_fee: state.forms.deposit_fee })
+        },
+        onChangeAdminFee(state, action) {
+            state.forms.admin_fee = formatCurrency(state.settings.admin_fee[state.forms.type_item], "Rp. ");
         },
         onChangeMentionedMarhunBih(state, action) {
             let marhun_bih = state.forms.marhun_bih;
@@ -121,7 +138,7 @@ const akad = createSlice({
                 state.forms.mentioned_marhun_bih = null;
             } else {
                 marhun_bih = numbersOnly(marhun_bih);
-                const mentioned_marhun_bih = terbilang(marhun_bih);
+                const mentioned_marhun_bih = terbilang(marhun_bih) + " Rupiah";
                 state.forms.mentioned_marhun_bih = mentioned_marhun_bih;
             }
         },
@@ -221,7 +238,7 @@ const conditionDepositeFeePaid = ({ time_period, payment_method, }) => {
         }
     }
 
-    for (var i = 1; i <= maks; i++) {
+    for (var i = 0; i <= maks; i++) {
         listDepositFeePaid.push(i);
     }
 
@@ -238,8 +255,7 @@ const conditionDepositFee = (state) => {
         type_item = state.forms.type_item,
         marhun_bih = state.forms.marhun_bih != null ? parseInt(numbersOnly(state.forms.marhun_bih)) : 0,
         payment_method = state.forms.payment_method,
-        time_period = state.forms.time_period,
-        percent = state.forms.margin[type_item] / 100;
+        percent = state.settings.margin[type_item] / 100;
     let deposit_fee = 0;
 
     if (payment_method == 1) {
@@ -286,15 +302,28 @@ const conditionPaymentMethod = ({ time_period }) => {
     }
 }
 
+const conditionDepositFeePaidTotal = ({ deposit_fee_paid, deposit_fee }) => {
+    let result = 0;
+
+    if (deposit_fee_paid != 0) {
+        result = deposit_fee_paid * parseInt(numbersOnly(deposit_fee));
+        result = formatCurrency(result, "Rp. ");
+    }
+
+    return result;
+}
+
 export const {
     onInsertForm,
     onInsertAllData,
+    onChangeAdminFee,
     onChangeDepositFee,
     onChangeEndContract,
     onInsertInitialState,
     onChangePaymentMethod,
     onChangeDepositFeePaid,
     onChangeMentionedMarhunBih,
+    onChangeDepositFeePaidTotal,
 } = akad.actions;
 
 export default akad.reducer;

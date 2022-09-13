@@ -12,6 +12,8 @@ import {
   onChangeDepositFee,
   onChangeMentionedMarhunBih,
   onChangePaymentMethod,
+  onChangeDepositFeePaidTotal,
+  onChangeAdminFee,
 } from "../../../store/akad";
 import { formatCurrency } from "../../../utils/Utils";
 
@@ -31,8 +33,6 @@ const FormDataGadai = (props) => {
 
     if (e.target.name == "time_period") {
       dispatch(onChangeEndContract({ time_period: e.target.value }));
-    } else if (e.target.name == "type_item") {
-      dispatch(onChangeDepositFee());
     }
   };
 
@@ -41,14 +41,11 @@ const FormDataGadai = (props) => {
     e.target.value = value;
 
     dispatch(onInsertForm({ name: e.target.name, value: value }));
-
-    if (e.target.name == "marhun_bih") {
-      dispatch(onChangeDepositFee());
-      dispatch(onChangeMentionedMarhunBih());
-    }
   };
 
   const onChangeTypeSubItem = (e) => {
+    dispatch(onInsertForm({ name: e.target.name, value: e.target.value }));
+
     if (e.target.value == "etc") {
       setState({ is_input_etc: true });
     } else {
@@ -66,11 +63,27 @@ const FormDataGadai = (props) => {
 
   useEffect(() => {
     dispatch(onChangeDepositFee());
+    dispatch(onChangeDepositFeePaidTotal());
   }, [formData.payment_method]);
 
   useEffect(() => {
     dispatch(onChangePaymentMethod());
   }, [formData.time_period]);
+
+  useEffect(() => {
+    dispatch(onChangeDepositFeePaidTotal());
+  }, [formData.deposit_fee_paid]);
+
+  useEffect(() => {
+    dispatch(onChangeDepositFee());
+    dispatch(onChangeAdminFee());
+  }, [formData.type_item]);
+
+  useEffect(() => {
+    dispatch(onChangeDepositFee());
+    dispatch(onChangeMentionedMarhunBih());
+    dispatch(onChangeDepositFeePaidTotal());
+  }, [formData.marhun_bih]);
 
   useEffect(() => {
     dispatch(onChangeDepositFeePaid());
@@ -178,6 +191,7 @@ const FormDataGadai = (props) => {
                 id="name_item"
                 className="form-control"
                 name="name_item"
+                ref={register({ required: true })}
                 onChange={(e) => onInput(e)}
                 defaultValue={formData.name_item}
               />
@@ -227,6 +241,7 @@ const FormDataGadai = (props) => {
                   defaultValue={item.value}
                   onChange={(e) => onChangeTypeSubItem(e)}
                   className="custom-control-input form-control"
+                  checked={formData.type_sub_item == item.value}
                 />
                 <label className="custom-control-label" htmlFor={`${stateAkad.forms.type_item}_${index}`}>
                   {item.label}
@@ -380,7 +395,7 @@ const FormDataGadai = (props) => {
               <select
                 ref={register({ required: true })}
                 onChange={(e) => onInput(e)}
-                defaultValue={formData.deposit_fee_paid}
+                value={formData.deposit_fee_paid}
                 className="form-control"
                 name="deposit_fee_paid"
                 id="deposit_fee_paid"
@@ -429,7 +444,8 @@ const FormDataGadai = (props) => {
                 name="admin_fee"
                 ref={register({ required: true })}
                 onChange={(e) => onInput(e)}
-                defaultValue={formData.admin_fee}
+                value={formData.admin_fee}
+                key="1"
               />
               {errors.admin_fee && <span className="invalid">This field is required</span>}
             </div>
@@ -447,7 +463,6 @@ const FormDataGadai = (props) => {
                 id="mentioned_marhun_bih"
                 className="form-control"
                 name="mentioned_marhun_bih"
-                ref={register({ required: true })}
                 onChange={(e) => onInput(e)}
                 defaultValue={formData.mentioned_marhun_bih}
               />
