@@ -4,7 +4,14 @@ import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Col, FormGroup, Label, Row } from "reactstrap";
-import { onChangeEndContract, onInsertInitialState, onInsertForm } from "../../../store/akad";
+import {
+  onChangeEndContract,
+  onInsertInitialState,
+  onInsertForm,
+  onChangeDepositFeePaid,
+  onChangeDepositFee,
+} from "../../../store/akad";
+import { formatCurrency } from "../../../utils/Utils";
 
 const FormDataGadai = (props) => {
   const dispatch = useDispatch();
@@ -17,12 +24,23 @@ const FormDataGadai = (props) => {
     is_input_etc: false,
   });
 
-  const onInputChange = (e) => {
+  const onInput = (e) => {
     if (e.target.name == "time_period") {
       dispatch(onChangeEndContract({ time_period: e.target.value }));
     }
 
     dispatch(onInsertForm({ name: e.target.name, value: e.target.value }));
+  };
+
+  const onInputNumberCurrency = (e) => {
+    const value = formatCurrency(e.target.value, "Rp. ");
+    e.target.value = value;
+
+    dispatch(onInsertForm({ name: e.target.name, value: value }));
+
+    if (e.target.name == "marhun_bih") {
+      dispatch(onChangeDepositFee());
+    }
   };
 
   const onChangeTypeSubItem = (e) => {
@@ -41,8 +59,13 @@ const FormDataGadai = (props) => {
     dispatch(onInsertInitialState());
   }, []);
 
+  useEffect(() => {
+    dispatch(onChangeDepositFeePaid());
+  }, [formData.payment_method, formData.time_period]);
+
   return (
     <form className="content clearfix" onSubmit={handleSubmit(submitForm)}>
+      <br />
       <h5>Waktu</h5>
       <hr />
       <Row className="gy-4">
@@ -58,7 +81,7 @@ const FormDataGadai = (props) => {
                 id="number_id"
                 className="form-control"
                 name="number_id"
-                onChange={(e) => onInputChange(e)}
+                onChange={(e) => onInput(e)}
                 defaultValue={formData.number_id}
               />
               {errors.number_id && <span className="invalid">This field is required</span>}
@@ -73,7 +96,7 @@ const FormDataGadai = (props) => {
             <div className="form-control-wrap">
               <select
                 ref={register({ required: true })}
-                onChange={(e) => onInputChange(e)}
+                onChange={(e) => onInput(e)}
                 defaultValue={formData.time_period}
                 className="form-control"
                 name="time_period"
@@ -127,6 +150,7 @@ const FormDataGadai = (props) => {
         </Col>
       </Row>
       <br />
+      <br />
       <h5>Barang Jaminan</h5>
       <hr />
       <Row className="gy-4">
@@ -141,7 +165,7 @@ const FormDataGadai = (props) => {
                 id="name_item"
                 className="form-control"
                 name="name_item"
-                onChange={(e) => onInputChange(e)}
+                onChange={(e) => onInput(e)}
                 defaultValue={formData.name_item}
               />
               {errors.name_item && <span className="invalid">This field is required</span>}
@@ -155,7 +179,7 @@ const FormDataGadai = (props) => {
               type="radio"
               id="electronic"
               name="type_item"
-              onChange={(e) => onInputChange(e)}
+              onChange={(e) => onInput(e)}
               value="electronic"
               className="custom-control-input form-control"
               defaultChecked
@@ -169,7 +193,7 @@ const FormDataGadai = (props) => {
               type="radio"
               id="vehicle"
               name="type_item"
-              onChange={(e) => onInputChange(e)}
+              onChange={(e) => onInput(e)}
               value="vehicle"
               className="custom-control-input form-control"
             />
@@ -197,7 +221,7 @@ const FormDataGadai = (props) => {
               </div>
               {state.is_input_etc && item.value == "etc" && (
                 <div className="custom-control custom-radio ">
-                  <input type="text" className="form-control" name="value_etc" onChange={(e) => onInputChange(e)} />
+                  <input type="text" className="form-control" name="value_etc" onChange={(e) => onInput(e)} />
                 </div>
               )}
             </div>
@@ -210,27 +234,210 @@ const FormDataGadai = (props) => {
             Kelengkapan Barang
           </Label>
           <div className="form-control-wrap">
-            <textarea className="no-resize form-control" type="textarea" id="good_accessories" defaultValue="" />
+            <textarea
+              className="no-resize form-control"
+              type="textarea"
+              id="good_accessories"
+              name="good_accessories"
+              value={formData.good_accessories}
+              onChange={(e) => onInput(e)}
+              defaultValue=""
+            />
           </div>
         </Col>
         <Col md="3">
-          <Label htmlFor="good_accessories" className="form-label">
+          <Label htmlFor="shortage_goods" className="form-label">
             Kekurangan / Kerusakan Barang
           </Label>
           <div className="form-control-wrap">
-            <textarea className="no-resize form-control" type="textarea" id="good_accessories" defaultValue="" />
+            <textarea
+              className="no-resize form-control"
+              type="textarea"
+              id="shortage_goods"
+              name="shortage_goods"
+              value={formData.shortage_goods}
+              onChange={(e) => onInput(e)}
+              defaultValue=""
+            />
           </div>
         </Col>
         <Col md="3">
-          <Label htmlFor="good_accessories" className="form-label">
+          <Label htmlFor="note_item" className="form-label">
             Catatan Barang
           </Label>
           <div className="form-control-wrap">
-            <textarea className="no-resize form-control" type="textarea" id="good_accessories" defaultValue="" />
+            <textarea className="no-resize form-control" type="textarea" id="note_item" defaultValue="" />
           </div>
         </Col>
       </Row>
-
+      <br />
+      <Row className="gy-4">
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="taksiran_marhun">
+              Taksiran Marhun
+            </label>
+            <div className="form-control-wrap">
+              <input
+                type="text"
+                id="taksiran_marhun"
+                className="form-control"
+                name="taksiran_marhun"
+                ref={register({ required: true })}
+                onChange={(e) => onInputNumberCurrency(e)}
+                value={formData.taksiran_marhun}
+              />
+              {errors.taksiran_marhun && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="marhun_bih">
+              Marhun Bih
+            </label>
+            <div className="form-control-wrap">
+              <input
+                type="text"
+                id="marhun_bih"
+                className="form-control"
+                name="marhun_bih"
+                ref={register({ required: true })}
+                onChange={(e) => onInputNumberCurrency(e)}
+                defaultValue={formData.marhun_bih}
+              />
+              {errors.marhun_bih && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="payment_method">
+              Opsi Pembayaran
+            </label>
+            <div className="form-control-wrap">
+              <select
+                ref={register({ required: true })}
+                onChange={(e) => onInput(e)}
+                defaultValue={formData.payment_method}
+                className="form-control"
+                name="payment_method"
+                id="payment_method"
+              >
+                {stateAkad.lists.payment_methods.map((item, index) => (
+                  <option value={item.value} key={index}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+              {errors.payment_method && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="deposit_fee">
+              Biaya Titip
+            </label>
+            <div className="form-control-wrap">
+              <input
+                type="text"
+                id="deposit_fee"
+                className="form-control"
+                name="deposit_fee"
+                ref={register({ required: true })}
+                onChange={(e) => onInputNumberCurrency(e)}
+                value={formData.deposit_fee}
+              />
+              {errors.deposit_fee && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="deposit_fee_paid">
+              Biaya Titip yang Dibayar
+            </label>
+            <div className="form-control-wrap">
+              <select
+                ref={register({ required: true })}
+                onChange={(e) => onInput(e)}
+                defaultValue={formData.deposit_fee_paid}
+                className="form-control"
+                name="deposit_fee_paid"
+                id="deposit_fee_paid"
+              >
+                {stateAkad.lists.deposit_fee_paids.map((item, index) => (
+                  <option value={item} key={index}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+              {errors.deposit_fee_paid && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="deposit_fee_paid_total">
+              Jumlah Biaya Titip yang Dibayar
+            </label>
+            <div className="form-control-wrap">
+              <input
+                readOnly
+                type="text"
+                id="deposit_fee_paid_total"
+                className="form-control"
+                name="deposit_fee_paid_total"
+                ref={register({ required: true })}
+                onChange={(e) => onInput(e)}
+                defaultValue={formData.deposit_fee_paid_total}
+              />
+              {errors.deposit_fee_paid_total && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="admin_fee">
+              Biaya Admin
+            </label>
+            <div className="form-control-wrap">
+              <input
+                readOnly
+                type="text"
+                id="admin_fee"
+                className="form-control"
+                name="admin_fee"
+                ref={register({ required: true })}
+                onChange={(e) => onInput(e)}
+                defaultValue={formData.admin_fee}
+              />
+              {errors.admin_fee && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+        <Col md="3">
+          <FormGroup>
+            <label className="form-label" htmlFor="mentioned_marhun_bih">
+              Terbilang
+            </label>
+            <div className="form-control-wrap">
+              <input
+                readOnly
+                type="text"
+                id="mentioned_marhun_bih"
+                className="form-control"
+                name="mentioned_marhun_bih"
+                ref={register({ required: true })}
+                onChange={(e) => onInput(e)}
+                defaultValue={formData.mentioned_marhun_bih}
+              />
+              {errors.mentioned_marhun_bih && <span className="invalid">This field is required</span>}
+            </div>
+          </FormGroup>
+        </Col>
+      </Row>
       <div className="actions clearfix">
         <ul>
           <li>

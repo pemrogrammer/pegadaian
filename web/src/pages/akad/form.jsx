@@ -45,7 +45,7 @@ const AkadForm = () => {
         <Block size="lg">
           <BlockHead>
             <BlockHeadContent>
-              <BlockTitle tag="h5">Akad - Form</BlockTitle>
+              <BlockTitle tag="h5">Akad - Baru</BlockTitle>
               {/* <p>A basic demonstration of wizard form basic.</p> */}
             </BlockHeadContent>
           </BlockHead>
