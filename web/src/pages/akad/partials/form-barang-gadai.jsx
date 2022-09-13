@@ -10,6 +10,8 @@ import {
   onInsertForm,
   onChangeDepositFeePaid,
   onChangeDepositFee,
+  onChangeMentionedMarhunBih,
+  onChangePaymentMethod,
 } from "../../../store/akad";
 import { formatCurrency } from "../../../utils/Utils";
 
@@ -25,11 +27,13 @@ const FormDataGadai = (props) => {
   });
 
   const onInput = (e) => {
+    dispatch(onInsertForm({ name: e.target.name, value: e.target.value }));
+
     if (e.target.name == "time_period") {
       dispatch(onChangeEndContract({ time_period: e.target.value }));
+    } else if (e.target.name == "type_item") {
+      dispatch(onChangeDepositFee());
     }
-
-    dispatch(onInsertForm({ name: e.target.name, value: e.target.value }));
   };
 
   const onInputNumberCurrency = (e) => {
@@ -40,6 +44,7 @@ const FormDataGadai = (props) => {
 
     if (e.target.name == "marhun_bih") {
       dispatch(onChangeDepositFee());
+      dispatch(onChangeMentionedMarhunBih());
     }
   };
 
@@ -58,6 +63,14 @@ const FormDataGadai = (props) => {
   useEffect(() => {
     dispatch(onInsertInitialState());
   }, []);
+
+  useEffect(() => {
+    dispatch(onChangeDepositFee());
+  }, [formData.payment_method]);
+
+  useEffect(() => {
+    dispatch(onChangePaymentMethod());
+  }, [formData.time_period]);
 
   useEffect(() => {
     dispatch(onChangeDepositFeePaid());
@@ -180,7 +193,7 @@ const FormDataGadai = (props) => {
               id="electronic"
               name="type_item"
               onChange={(e) => onInput(e)}
-              value="electronic"
+              defaultValue="electronic"
               className="custom-control-input form-control"
               defaultChecked
             />
@@ -194,7 +207,7 @@ const FormDataGadai = (props) => {
               id="vehicle"
               name="type_item"
               onChange={(e) => onInput(e)}
-              value="vehicle"
+              defaultValue="vehicle"
               className="custom-control-input form-control"
             />
             <label className="custom-control-label" htmlFor="vehicle">
@@ -211,7 +224,7 @@ const FormDataGadai = (props) => {
                   type="radio"
                   id={`${stateAkad.forms.type_item}_${index}`}
                   name="type_sub_item"
-                  value={item.value}
+                  defaultValue={item.value}
                   onChange={(e) => onChangeTypeSubItem(e)}
                   className="custom-control-input form-control"
                 />
@@ -239,9 +252,8 @@ const FormDataGadai = (props) => {
               type="textarea"
               id="good_accessories"
               name="good_accessories"
-              value={formData.good_accessories}
+              defaultValue={formData.good_accessories}
               onChange={(e) => onInput(e)}
-              defaultValue=""
             />
           </div>
         </Col>
@@ -255,9 +267,8 @@ const FormDataGadai = (props) => {
               type="textarea"
               id="shortage_goods"
               name="shortage_goods"
-              value={formData.shortage_goods}
+              defaultValue={formData.shortage_goods}
               onChange={(e) => onInput(e)}
-              defaultValue=""
             />
           </div>
         </Col>
@@ -266,7 +277,13 @@ const FormDataGadai = (props) => {
             Catatan Barang
           </Label>
           <div className="form-control-wrap">
-            <textarea className="no-resize form-control" type="textarea" id="note_item" defaultValue="" />
+            <textarea
+              className="no-resize form-control"
+              type="textarea"
+              id="note_item"
+              name="note_item"
+              defaultValue=""
+            />
           </div>
         </Col>
       </Row>
@@ -285,7 +302,7 @@ const FormDataGadai = (props) => {
                 name="taksiran_marhun"
                 ref={register({ required: true })}
                 onChange={(e) => onInputNumberCurrency(e)}
-                value={formData.taksiran_marhun}
+                defaultValue={formData.taksiran_marhun}
               />
               {errors.taksiran_marhun && <span className="invalid">This field is required</span>}
             </div>
@@ -341,13 +358,14 @@ const FormDataGadai = (props) => {
             </label>
             <div className="form-control-wrap">
               <input
+                readOnly
                 type="text"
                 id="deposit_fee"
                 className="form-control"
                 name="deposit_fee"
                 ref={register({ required: true })}
                 onChange={(e) => onInputNumberCurrency(e)}
-                value={formData.deposit_fee}
+                defaultValue={formData.deposit_fee}
               />
               {errors.deposit_fee && <span className="invalid">This field is required</span>}
             </div>

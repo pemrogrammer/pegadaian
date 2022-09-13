@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import customAxios from "../axios";
 import moment from 'moment';
-import { cleaningNumber, numbersOnly, terbilang } from "../utils/Utils";
+import { cleaningNumber, formatCurrency, numbersOnly, terbilang } from "../utils/Utils";
 
 const defaultState = {
     tables: {
@@ -14,9 +14,9 @@ const defaultState = {
         fifteenDayLastData: [],
     },
     forms: {
-        percent: 10,
+        discont: 10000,
         margin: {
-            "electronic": 3, // 3%
+            "electronic": 10, // 10%
             "vehicle": 5, // 5%
         },
         number_id: null,
@@ -27,6 +27,7 @@ const defaultState = {
         value_etc: null,
         payment_method: 1,
         mentioned_marhun_bih: null,
+        deposit_fee: null,
     },
     lists: {
         time_periods: [{
@@ -81,10 +82,6 @@ const defaultState = {
                 label: '7 Hari',
                 value: 7,
             },
-            {
-                label: '15 Hari',
-                value: 15,
-            },
         ],
         deposit_fee_paids: [],
     }
@@ -112,12 +109,18 @@ const akad = createSlice({
             state.lists.deposit_fee_paids = conditionDepositeFeePaid({ time_period: state.forms.time_period, payment_method: state.forms.payment_method });
         },
         onChangeDepositFee(state, action) {
+            state.forms.deposit_fee = conditionDepositFee(state);
+        },
+        onChangePaymentMethod(state, action) {
+            state.lists.payment_methods = conditionPaymentMethod({ time_period: state.forms.time_period });
+        },
+        onChangeMentionedMarhunBih(state, action) {
             let marhun_bih = state.forms.marhun_bih;
-            marhun_bih = numbersOnly(marhun_bih);
 
             if (marhun_bih == null || marhun_bih == "") {
                 state.forms.mentioned_marhun_bih = null;
             } else {
+                marhun_bih = numbersOnly(marhun_bih);
                 const mentioned_marhun_bih = terbilang(marhun_bih);
                 state.forms.mentioned_marhun_bih = mentioned_marhun_bih;
             }
@@ -229,91 +232,69 @@ const conditionDepositeFeePaid = ({ time_period, payment_method, }) => {
  * value is 'nilai' from 'marhun_bih', 'opsi_pembayaran', or 'jenis_barang'
  * option for condition between 'marhun bih', 'opsi_pembayaran' and 'jenis_barang'
  */
-function conditionDepositFee(state) {
+const conditionDepositFee = (state) => {
     // var persenan = $('#persenan').val() / 100
-    const percent = state.forms.percent;
-    const marhun_bih = cleaningNumber(state.forms.marhun_bih);
-    const payment_method = state.forms.payment_method;
-    const time_period = state.forms.time_period;
+    const discont = state.forms.discont,
+        type_item = state.forms.type_item,
+        marhun_bih = state.forms.marhun_bih != null ? parseInt(numbersOnly(state.forms.marhun_bih)) : 0,
+        payment_method = state.forms.payment_method,
+        time_period = state.forms.time_period,
+        percent = state.forms.margin[type_item] / 100;
+    let deposit_fee = 0;
 
-    console.info(percent, marhun_bih, payment_method, time_period);
+    if (payment_method == 1) {
+        deposit_fee = (marhun_bih * percent - discont) / 2 / 7
+    } else if (payment_method == 7) {
+        deposit_fee = (marhun_bih * percent - discont) / 2
+    } else if (payment_method == 15) {
+        deposit_fee = marhun_bih * percent
+    }
 
-    // // override base on condition form 'opsi_pembayaran'
-    // if (option == 'marhun_bih') {
-    //     marhun_bih = value
-    // } else {
-    //     marhun_bih = $('#marhun_bih').val().replace(".", "").replace(".", "").replace(".", "")
-    // }
+    deposit_fee = deposit_fee > 0 ? deposit_fee.toFixed(0) : 0;
+    const deposit_fee_currency = formatCurrency(deposit_fee, "Rp. ");
 
-    // if (option == 'opsi_pembayaran') {
-    //     var opsi_pembayaran = value
-    // } else {
-    //     var opsi_pembayaran = $('#nilai_opsi_pembayaran').val()
-    // }
+    // console.info(deposit_fee, deposit_fee_currency, marhun_bih, percent, discont);
 
-    // if (option == 'jenis_barang') {
-    //     var jenis_barang = value
-    // } else {
-    //     var jenis_barang = $('#nilai_jenis_barang').val()
-    // }
+    return deposit_fee_currency;
+}
 
-    // if (option == 'bt_yang_dibayar') {
-    //     var bt_yang_dibayar = value
-    // } else {
-    //     var bt_yang_dibayar = $('#nilai_bt_yang_dibayar').val();
-    // }
-
-    // set nominal 'potongan biaya titip'
-    // if(jenis_barang == 'elektronik'){
-    //     var potongan = {{$potongan_elektronik ? $potongan_elektronik : 0}}
-    //     var persenan = {{$margin_elektronik ? $margin_elektronik : 1}} / 100
-    // }else{
-    //     var potongan = {{$potongan_kendaraan ? $potongan_kendaraan : 0}}
-    //     var persenan = {{$margin_kendaraan ? $margin_kendaraan : 1}} / 100
-    // }
-
-    // formula 'opsi_pembayaran'
-
-    // if (opsi_pembayaran == 1) {
-    //     var biaya_titip = (marhun_bih * persenan - potongan) / 2 / 7
-    // } else if (opsi_pembayaran == 7) {
-    //     var biaya_titip = (marhun_bih * persenan - potongan) / 2
-    // } else if (opsi_pembayaran == 15) {
-    //     var biaya_titip = marhun_bih * persenan
-    // }
-
-    // // condition for negatif number of 'biaya titip'
-    // biaya_titip = biaya_titip <= 0 ? 0 : biaya_titip
-
-    // if (biaya_titip >= 1000 && biaya_titip != 0) {
-    //     thousand_bt = 1000
-    // } else {
-    //     thousand_bt = 1
-    // }
-
-    // biaya_titip = format_nominal(biaya_titip)
-    // biaya_titip = biaya_titip.replace("Rp", "")
-    // biaya_titip = Math.ceil(biaya_titip) * thousand_bt
-    // var nominal_biaya_titip = formatRupiah(biaya_titip.toString())
-    // $('.biaya_titip').val(nominal_biaya_titip)
-
-    // // 'rumus jumlah biaya titip yang dibayar'
-    // var jml_bt_yang_dibayar = biaya_titip * bt_yang_dibayar
-
-    // // console.log(jml_bt_yang_dibayar)
-
-    // jml_bt_yang_dibayar = jml_bt_yang_dibayar
-    // jml_bt_yang_dibayar = formatRupiah(jml_bt_yang_dibayar.toString())
-    // $('.jml_bt_yang_dibayar').val(jml_bt_yang_dibayar)
+const conditionPaymentMethod = ({ time_period }) => {
+    if (time_period == 7) {
+        return [{
+                label: 'Harian',
+                value: 1,
+            },
+            {
+                label: '7 Hari',
+                value: 7,
+            },
+        ];
+    } else {
+        return [{
+                label: 'Harian',
+                value: 1,
+            },
+            {
+                label: '7 Hari',
+                value: 7,
+            },
+            {
+                label: '15 Hari',
+                value: 15,
+            },
+        ]
+    }
 }
 
 export const {
-    onInsertAllData,
     onInsertForm,
+    onInsertAllData,
+    onChangeDepositFee,
     onChangeEndContract,
     onInsertInitialState,
+    onChangePaymentMethod,
     onChangeDepositFeePaid,
-    onChangeDepositFee,
+    onChangeMentionedMarhunBih,
 } = akad.actions;
 
 export default akad.reducer;
