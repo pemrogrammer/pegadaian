@@ -2,6 +2,8 @@
 
 Vue/Nuxt starter pack. Pug, PostCSS, Docker, Gitlab CI auto deploy.
 
+source starterpack : link('https://github.com/AlekseyPleshkov/nuxt-starter-pack')
+
 ## Install
 
 ``` bash
