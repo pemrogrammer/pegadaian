@@ -1,14 +1,12 @@
+
 <template>
-  <div id="app">
-    <!-- <nav>
-      <router-link to="/">Home</router-link>
-    </nav>-->
-    <router-view />
-  </div>
+  <VApp>
+    <VLayout class="layout-wrapper layout-nav-type-vertical">
+      <RouterView />
+    </VLayout>
+  </VApp>
 </template>
 
-<style lang="scss">
-#app {
-  height: 100%;
-}
-</style>
+<script setup>
+</script>
+
