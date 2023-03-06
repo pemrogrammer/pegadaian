@@ -3,18 +3,14 @@
     <div class="wrapper">
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-          <a class="sidebar-brand" href="index.html">
-            <span class="align-middle">Pegadaian</span>
+          <a class="sidebar-brand" :to="{ name: 'dashboard'}" @click="onClickLogo('dashboard')">
+            <span class="align-middle">PawnShop</span>
           </a>
 
           <ul class="sidebar-nav">
-            <li class="sidebar-header">Pages</li>
+            <li class="sidebar-header">Main</li>
 
             <li class="sidebar-item" :class="setActive('dashboard')">
-              <!-- <a class="sidebar-link" href="index.html">
-                <i class="align-middle" data-feather="sliders"></i>
-                <span class="align-middle">Dashboard</span>
-              </a>-->
               <b-link
                 class="sidebar-link"
                 :to="{ name: 'dashboard'}"
@@ -24,18 +20,35 @@
                 <span class="align-middle">Dashboard</span>
               </b-link>
             </li>
-            <li class="sidebar-item" :class="setActive('akadForm')">
-              <!-- <a class="sidebar-link" href="#">
-                <i class="align-middle" data-feather="clipboard"></i>
-                <span class="align-middle">Buat Akad</span>
-              </a>-->
+            <li class="sidebar-item" :class="setActive('contractForm')">
               <b-link
                 class="sidebar-link"
-                @click="onClickMenu('akadForm')"
-                :to="{ name: 'akadForm'}"
+                @click="onClickMenu('contractForm')"
+                :to="{ name: 'contractForm'}"
               >
                 <i class="align-middle" data-feather="clipboard"></i>
-                <span class="align-middle">Buat Akad</span>
+                <span class="align-middle">Make a Contract</span>
+              </b-link>
+            </li>
+            <li class="sidebar-item" :class="setActive('contractData')">
+              <b-link
+                class="sidebar-link"
+                @click="onClickMenu('contractData')"
+                :to="{ name: 'contractData'}"
+              >
+                <i class="align-middle" data-feather="database"></i>
+                <span class="align-middle">Data Contract</span>
+              </b-link>
+            </li>
+            <li class="sidebar-header">Master</li>
+            <li class="sidebar-item" :class="setActive('customerData')">
+              <b-link
+                class="sidebar-link"
+                @click="onClickMenu('customerData')"
+                :to="{ name: 'customerData'}"
+              >
+                <i class="align-middle" data-feather="persons"></i>
+                <span class="align-middle">Data Customer</span>
               </b-link>
             </li>
           </ul>
@@ -93,6 +106,8 @@
 <script>
 import feather from "feather-icons";
 
+require("@/assets/css/app-theme.css");
+
 document.addEventListener("DOMContentLoaded", () => {
   feather.replace();
 });
@@ -130,6 +145,11 @@ export default {
     onClickMenu(nameMenu) {
       this.nameMenu = nameMenu;
     },
+    onClickLogo(nameMenu) {
+      this.nameMenu = nameMenu;
+
+      this.$router.push({ name: "dashboard" });
+    },
     setActive(nameMenu) {
       return this.nameMenu == nameMenu ? "active" : "";
     },
@@ -137,5 +157,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" >
 </style>

@@ -4,7 +4,7 @@
       <strong>Analytics</strong>
       Dashboard
       <br />
-      <b-button variant="info" size="sm" @click="onSend">send</b-button>
+      <!-- <b-button variant="info" size="sm" @click="onSend">send</b-button> -->
     </h1>
   </div>
 </template>

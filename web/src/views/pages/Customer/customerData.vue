@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Akad Form</h2>
+    <h2>{{title}}</h2>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      title: "form akad",
+      title: "Data Customer",
     };
   },
 };

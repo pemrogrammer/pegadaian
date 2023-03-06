@@ -6,7 +6,9 @@ import Default from "@/views/layouts/default.vue";
 
 // pages
 import Dashboard from "@/views/pages/Dashboard/dashboard.vue";
-import AkadForm from "@/views/pages/Akad/akadForm.vue";
+import ContractForm from "@/views/pages/Contract/contractForm.vue";
+import ContractData from "@/views/pages/Contract/contractData.vue";
+import CustomerData from "@/views/pages/Customer/customerData.vue";
 
 Vue.use(VueRouter);
 
@@ -21,17 +23,30 @@ const routes = [
   {
     path: "/",
     component: Default,
+    redirect: "/dashboard",
     children: [
       {
         path: "/dashboard",
         name: "dashboard",
         component: Dashboard,
       },
-      ...prefixRoutes("/akad", [
+      ...prefixRoutes("/contract", [
         {
           path: "/form",
-          name: "akadForm",
-          component: AkadForm,
+          name: "contractForm",
+          component: ContractForm,
+        },
+        {
+          path: "/data",
+          name: "contractData",
+          component: ContractData,
+        },
+      ]),
+      ...prefixRoutes("/customer", [
+        {
+          path: "/data",
+          name: "customerData",
+          component: CustomerData,
         },
       ]),
     ],
