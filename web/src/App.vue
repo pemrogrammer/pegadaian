@@ -1,12 +1,8 @@
-
 <template>
-  <VApp>
-    <VLayout class="layout-wrapper layout-nav-type-vertical">
-      <RouterView />
-    </VLayout>
-  </VApp>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
-<script setup>
-</script>
-
+<style lang="scss">
+</style>

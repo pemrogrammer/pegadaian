@@ -1,13 +1,41 @@
-import { setupLayouts } from 'virtual:generated-layouts'
-import { createRouter, createWebHistory } from 'vue-router'
-import routes from '~pages'
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    ...setupLayouts(routes),
-  ],
-  scrollBehavior() {
-    return { top: 0 }
+import Vue from "vue";
+import VueRouter from "vue-router";
+
+// layouts
+import Default from "@/views/layouts/default.vue";
+
+// modules
+import Dashboard from "@/views/pages/Dashboard/dashboard.vue";
+
+Vue.use(VueRouter);
+
+const routes = [
+  {
+    path: "/",
+    component: Default,
+    children: [
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        component: Dashboard,
+      },
+    ],
   },
-})
-export default router
+  // {
+  //   path: "/about",
+  //   name: "about",
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  // },
+];
+
+const router = new VueRouter({
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes,
+});
+
+export default router;
