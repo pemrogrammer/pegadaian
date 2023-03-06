@@ -4,10 +4,18 @@ import VueRouter from "vue-router";
 // layouts
 import Default from "@/views/layouts/default.vue";
 
-// modules
+// pages
 import Dashboard from "@/views/pages/Dashboard/dashboard.vue";
+import AkadForm from "@/views/pages/Akad/akadForm.vue";
 
 Vue.use(VueRouter);
+
+function prefixRoutes(prefix, routes) {
+  return routes.map((route) => {
+    route.path = prefix + "" + route.path;
+    return route;
+  });
+}
 
 const routes = [
   {
@@ -19,8 +27,16 @@ const routes = [
         name: "dashboard",
         component: Dashboard,
       },
+      ...prefixRoutes("/akad", [
+        {
+          path: "/form",
+          name: "akadForm",
+          component: AkadForm,
+        },
+      ]),
     ],
   },
+
   // {
   //   path: "/about",
   //   name: "about",
