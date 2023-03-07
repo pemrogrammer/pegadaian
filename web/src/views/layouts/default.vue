@@ -3,7 +3,11 @@
     <div class="wrapper">
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-          <a class="sidebar-brand" :to="{ name: 'dashboard'}" @click="onClickLogo('dashboard')">
+          <a
+            class="sidebar-brand"
+            :to="{ name: 'dashboard' }"
+            @click="onClickLogo('dashboard')"
+          >
             <span class="align-middle">PawnShop</span>
           </a>
 
@@ -13,7 +17,7 @@
             <li class="sidebar-item" :class="setActive('dashboard')">
               <b-link
                 class="sidebar-link"
-                :to="{ name: 'dashboard'}"
+                :to="{ name: 'dashboard' }"
                 @click="onClickMenu('dashboard')"
               >
                 <i class="align-middle" data-feather="sliders"></i>
@@ -24,7 +28,7 @@
               <b-link
                 class="sidebar-link"
                 @click="onClickMenu('contractForm')"
-                :to="{ name: 'contractForm'}"
+                :to="{ name: 'contractForm' }"
               >
                 <i class="align-middle" data-feather="clipboard"></i>
                 <span class="align-middle">Make a Contract</span>
@@ -34,7 +38,7 @@
               <b-link
                 class="sidebar-link"
                 @click="onClickMenu('contractData')"
-                :to="{ name: 'contractData'}"
+                :to="{ name: 'contractData' }"
               >
                 <i class="align-middle" data-feather="database"></i>
                 <span class="align-middle">Data Contract</span>
@@ -45,7 +49,7 @@
               <b-link
                 class="sidebar-link"
                 @click="onClickMenu('customerData')"
-                :to="{ name: 'customerData'}"
+                :to="{ name: 'customerData' }"
               >
                 <i class="align-middle" data-feather="persons"></i>
                 <span class="align-middle">Data Customer</span>
@@ -81,11 +85,12 @@
                     class="avatar img-fluid rounded me-1"
                     alt="Charles Hall"
                   />-->
-                  <span class="text-dark">{{nameUser}}</span>
+                  <span class="text-dark">{{ nameUser }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                   <a class="dropdown-item" href="pages-profile.html">
-                    <i class="align-middle me-1" data-feather="user"></i> Profile
+                    <i class="align-middle me-1" data-feather="user"></i>
+                    Profile
                   </a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#">Log out</a>
@@ -157,5 +162,8 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>
