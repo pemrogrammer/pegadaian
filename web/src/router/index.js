@@ -5,10 +5,10 @@ import VueRouter from "vue-router";
 import Default from "@/views/layouts/default.vue";
 
 // pages
-import Dashboard from "@/views/pages/Dashboard/dashboard.vue";
-import ContractForm from "@/views/pages/Contract/contractForm.vue";
-import ContractData from "@/views/pages/Contract/contractData.vue";
-import CustomerData from "@/views/pages/Customer/customerData.vue";
+import Dashboard from "@/views/pages/Dashboard.vue";
+import ContractForm from "@/views/pages/ContractForm.vue";
+import ContractData from "@/views/pages/ContractData.vue";
+import CustomerData from "@/views/pages/CustomerData.vue";
 
 Vue.use(VueRouter);
 
