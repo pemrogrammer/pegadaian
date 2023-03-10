@@ -2,7 +2,7 @@
   <b-card no-body>
     <b-card-header header-tag="nav">
       <b-tabs content-class="mt-3">
-        <b-tab title="Pawned Goods" active>
+        <b-tab title="Pawned Items" active>
           <PawnedGoods />
         </b-tab>
         <b-tab title="Customer Data">
