@@ -3,7 +3,7 @@ import moment from "moment";
 
 const defaultForm = {
   number_id: 11,
-  term_contract: 7,
+  time_periode: 7,
   date_start: new Date(moment().format("YYYY-MM-DD")),
   date_end: new Date(moment().add({ day: 7 }).format("YYYY-MM-DD")),
   name_item: null,
@@ -15,16 +15,18 @@ const defaultForm = {
   // kekurangan barang
   deficiency_item: null,
   note_item: null,
-  payment_method: 1,
   mentioned_marhun_bih: null,
-  deposit_fee: null,
-  admin_fee: "Rp. 10.0000",
-  deposit_fee_paid: 0,
-  deposit_fee_paid_total: null,
   // taksiran marhun
   asset_valuation: "Rp, 0",
   // Marhun Bih
-  interest_free_loan: "Rp, 0"
+  interest_free_loan: "Rp, 0",
+  // opsi pembayaran
+  payment_method: 1,
+  // biaya titip
+  deposit_fee: "Rp, 10.000",
+  admin_fee: "Rp. 10.0000",
+  deposit_fee_paid: 0,
+  deposit_fee_paid_total: "50.000",
 };
 
 const ContractForm = {
@@ -33,69 +35,88 @@ const ContractForm = {
     base_url: null,
     data: [],
     params: {
-      date_filter: new Date()
+      date_filter: new Date(),
     },
     form: { ...defaultForm },
     options: {
-      term_contracts: [
+      time_periodes: [
         {
-          id: 7,
-          label: 7
+          label: "7 Days",
+          value: 7,
         },
         {
-          id: 14,
-          label: 14
-        }
+          label: "15 Days",
+          value: 15,
+        },
+        {
+          label: "30 Days",
+          value: 30,
+        },
+        {
+          label: "60 Days",
+          value: 60,
+        },
+      ],
+      payment_methods: [
+        {
+          value: 1,
+          label: "Daily",
+        },
+        {
+          value: 7,
+          label: "7 Days",
+        },
       ],
       type_items: [
         { text: "Electronic", value: "electronic" },
-        { text: "Transport", value: "transport" }
+        { text: "Transport", value: "transport" },
       ],
       type_sub_items: {
         electronic: [
           {
             text: "Smartphone",
-            value: "smartphone"
+            value: "smartphone",
           },
           {
             text: "Laptop / PC",
-            value: "laptop / pc"
+            value: "laptop / pc",
           },
           {
             text: "Kamera",
-            value: "camera"
+            value: "camera",
           },
           {
             text: "TV",
-            value: "tv"
+            value: "tv",
           },
           {
             text: "Dan lain lain",
-            value: "etc"
-          }
+            value: "etc",
+          },
         ],
         transport: [
           {
             text: "Motor",
-            value: "motor cycle"
+            value: "motor cycle",
           },
           {
             text: "Mobil",
-            value: "Car"
-          }
-        ]
-      }
+            value: "Car",
+          },
+        ],
+      },
+      deposit_fee_paids: [],
     },
     loading: {
-      table: false
-    }
+      table: false,
+    },
   },
   mutations: {
     INSERT_FORM_NUMBER_ID(state, payload) {
       state.form.number_id = payload.number_id;
     },
-    INSERT_FORM_TERM_CONTRACT(state, payload) {
-      state.form.term_contract = payload.term_contract;
+    INSERT_FORM_TIME_PERIODE(state, payload) {
+      state.form.time_periode = payload.time_periode;
     },
     INSERT_FORM_DATE_START(state, payload) {
       state.form.date_start = payload.date_start;
@@ -127,23 +148,35 @@ const ContractForm = {
     INSERT_FORM_INTEREST_FREE_LOAN(state, payload) {
       state.form.interest_free_loan = payload.interest_free_loan;
     },
+    INSERT_FORM_PAYMENT_METHOD(state, payload) {
+      state.form.payment_method = payload.payment_method;
+    },
+    INSERT_FORM_DEPOSIT_FEE(state, payload) {
+      state.form.deposit_fee = payload.deposit_fee;
+    },
+    INSERT_FORM_DEPOSIT_FEE_PAID(state, payload) {
+      state.form.deposit_fee_paid = payload.deposit_fee_paid;
+    },
+    INSERT_FORM_DEPOSIT_FEE_PAID_TOTAL(state, payload) {
+      state.form.deposit_fee_paid_total = payload.deposit_fee_paid_total;
+    },
     CLEAR_FORM(state, payload) {
       state.form = { ...defaultForm };
-    }
+    },
   },
   actions: {
     onChangeDateEnd: (context, payload) => {
-      // console.info(context.state.form.term_contract);
+      // console.info(context.state.form.time_periode);
 
       context.commit("INSERT_FORM_DATE_END", {
         date_end: new Date(
           moment(context.state.form.date_start)
-            .add({ day: context.state.form.term_contract })
+            .add({ day: context.state.form.time_periode })
             .format("YYYY-MM-DD")
-        )
+        ),
       });
-    }
-  }
+    },
+  },
 };
 
 export default ContractForm;
