@@ -17,16 +17,17 @@ const defaultForm = {
   note_item: null,
   mentioned_marhun_bih: null,
   // taksiran marhun
-  asset_valuation: "Rp, 0",
+  asset_valuation: 0,
   // Marhun Bih
-  interest_free_loan: "Rp, 0",
+  interest_free_loan: 0,
   // opsi pembayaran
   payment_method: 1,
   // biaya titip
-  deposit_fee: "Rp, 10.000",
-  admin_fee: "Rp. 10.0000",
+  deposit_fee: 0,
+  admin_fee: 0,
   deposit_fee_paid: 0,
   deposit_fee_paid_total: "50.000",
+  in_text: null
 };
 
 const ContractForm = {
@@ -35,81 +36,81 @@ const ContractForm = {
     base_url: null,
     data: [],
     params: {
-      date_filter: new Date(),
+      date_filter: new Date()
     },
     form: { ...defaultForm },
     options: {
       time_periodes: [
         {
           label: "7 Days",
-          value: 7,
+          value: 7
         },
         {
           label: "15 Days",
-          value: 15,
+          value: 15
         },
         {
           label: "30 Days",
-          value: 30,
+          value: 30
         },
         {
           label: "60 Days",
-          value: 60,
-        },
+          value: 60
+        }
       ],
       payment_methods: [
         {
           value: 1,
-          label: "Daily",
+          label: "Daily"
         },
         {
           value: 7,
-          label: "7 Days",
-        },
+          label: "7 Days"
+        }
       ],
       type_items: [
         { text: "Electronic", value: "electronic" },
-        { text: "Transport", value: "transport" },
+        { text: "Transport", value: "transport" }
       ],
       type_sub_items: {
         electronic: [
           {
             text: "Smartphone",
-            value: "smartphone",
+            value: "smartphone"
           },
           {
             text: "Laptop / PC",
-            value: "laptop / pc",
+            value: "laptop / pc"
           },
           {
             text: "Kamera",
-            value: "camera",
+            value: "camera"
           },
           {
             text: "TV",
-            value: "tv",
+            value: "tv"
           },
           {
             text: "Dan lain lain",
-            value: "etc",
-          },
+            value: "etc"
+          }
         ],
         transport: [
           {
             text: "Motor",
-            value: "motor cycle",
+            value: "motor cycle"
           },
           {
             text: "Mobil",
-            value: "Car",
-          },
-        ],
+            value: "Car"
+          }
+        ]
       },
-      deposit_fee_paids: [],
+      deposit_fee_paids: []
     },
     loading: {
-      table: false,
-    },
+      table: false
+    }
   },
   mutations: {
     INSERT_FORM_NUMBER_ID(state, payload) {
@@ -160,9 +161,15 @@ const ContractForm = {
     INSERT_FORM_DEPOSIT_FEE_PAID_TOTAL(state, payload) {
       state.form.deposit_fee_paid_total = payload.deposit_fee_paid_total;
     },
+    INSERT_FORM_ADMIN_FEE(state, payload) {
+      state.form.admin_fee = payload.admin_fee;
+    },
+    INSERT_FORM_IN_TEXT(state, payload) {
+      state.form.in_text = payload.in_text;
+    },
     CLEAR_FORM(state, payload) {
       state.form = { ...defaultForm };
-    },
+    }
   },
   actions: {
     onChangeDateEnd: (context, payload) => {
@@ -173,10 +180,10 @@ const ContractForm = {
           moment(context.state.form.date_start)
             .add({ day: context.state.form.time_periode })
             .format("YYYY-MM-DD")
-        ),
+        )
       });
-    },
-  },
+    }
+  }
 };
 
 export default ContractForm;

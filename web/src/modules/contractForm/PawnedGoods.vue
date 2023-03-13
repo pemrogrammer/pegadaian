@@ -23,7 +23,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col col sm="12" md="2">
+      <b-col col sm="12" md="3" style="padding-right: 0px">
         <b-form-group label="Date Start Contract" label-for="date_start">
           <DatePicker
             id="date_start"
@@ -34,7 +34,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col col sm="12" md="2">
+      <b-col col sm="12" md="3" style="padding-left: 0px">
         <b-form-group label="Due Date of the Contract" label-for="date_end">
           <DatePicker
             id="date_end"
@@ -163,14 +163,15 @@
           />
         </b-form-group>
       </b-col>
-    </b-row>
-    <b-row>
       <b-col col sm="12" md="3">
         <!-- biaya titip -->
         <b-form-group label="Commision Fee" label-for="deposit_fee">
-          <b-form-input v-model="deposit_fee" id="deposit_fee" name="deposit_fee" />
+          <b-form-input v-model="deposit_fee" id="deposit_fee" name="deposit_fee" disabled />
         </b-form-group>
       </b-col>
+    </b-row>
+    <br />
+    <b-row>
       <b-col col sm="12" md="3">
         <!-- Biaya Titip yang Dibayar -->
         <b-form-group label="Deposit Fee Paided" label-for="deposit_fee_paid">
@@ -188,12 +189,25 @@
       </b-col>
       <b-col col sm="12" md="3">
         <!-- Jumlah Biaya Titip yang Dibayar -->
-        <b-form-group label="Deposit Fee Paided" label-for="deposit_fee_paid_total">
+        <b-form-group label="Total Deposit Fee Paided" label-for="deposit_fee_paid_total">
           <b-form-input
             v-model="deposit_fee_paid_total"
             id="deposit_fee_paid_total"
             name="deposit_fee_paid_total"
+            disabled
           />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- Biaya Admin -->
+        <b-form-group label="Admin Fee" label-for="admin_fee">
+          <b-form-input v-model="admin_fee" id="admin_fee" name="admin_fee" disabled />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- Terbilang -->
+        <b-form-group label="In Text" label-for="in_text">
+          <b-form-input v-model="in_text" id="in_text" name="in_text" disabled />
         </b-form-group>
       </b-col>
     </b-row>
@@ -416,6 +430,26 @@ export default {
       set(value) {
         this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE_PAID_TOTAL", {
           deposit_fee_paid_total: value,
+        });
+      },
+    },
+    admin_fee: {
+      get() {
+        return this.$store.state.ContractForm.form.admin_fee;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_ADMIN_FEE", {
+          admin_fee: value,
+        });
+      },
+    },
+    in_text: {
+      get() {
+        return this.$store.state.ContractForm.form.in_text;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_IN_TEXT", {
+          in_text: value,
         });
       },
     },
