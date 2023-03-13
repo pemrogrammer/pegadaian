@@ -375,7 +375,7 @@ export default {
     },
     asset_valuation: {
       get() {
-        return this.$store.state.ContractForm.form.asset_valuation;
+        return this.$store.state.ContractForm.form.read_asset_valuation;
       },
       set(value) {
         this.$store.commit("ContractForm/INSERT_FORM_ASSET_VALUATION", {

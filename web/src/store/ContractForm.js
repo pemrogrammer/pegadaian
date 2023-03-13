@@ -1,6 +1,8 @@
 import axios from "axios";
 import moment from "moment";
 
+import { formatCurrency, numbersOnly, cleaningNumber } from "../utils";
+
 const defaultForm = {
   number_id: 11,
   time_periode: 7,
@@ -17,15 +19,16 @@ const defaultForm = {
   note_item: null,
   mentioned_marhun_bih: null,
   // taksiran marhun
-  asset_valuation: 0,
+  asset_valuation: null,
+  read_asset_valuation: null,
   // Marhun Bih
-  interest_free_loan: 0,
+  interest_free_loan: null,
   // opsi pembayaran
   payment_method: 1,
   // biaya titip
-  deposit_fee: 0,
-  admin_fee: 0,
-  deposit_fee_paid: 0,
+  deposit_fee: null,
+  admin_fee: null,
+  deposit_fee_paid: null,
   deposit_fee_paid_total: "50.000",
   in_text: null
 };
@@ -144,7 +147,13 @@ const ContractForm = {
       state.form.note_item = payload.note_item;
     },
     INSERT_FORM_ASSET_VALUATION(state, payload) {
-      state.form.asset_valuation = payload.asset_valuation;
+      let numericString = payload.asset_valuation.replace(/\D/g, "");
+      let numericValue = parseFloat(numericString.replace(",", "."));
+      console.info(numericValue);
+      let readAble = formatCurrency(payload.asset_valuation, ".");
+      // console.info(readAble);
+      state.form.asset_valuation = numericValue;
+      state.form.read_asset_valuation = readAble;
     },
     INSERT_FORM_INTEREST_FREE_LOAN(state, payload) {
       state.form.interest_free_loan = payload.interest_free_loan;
