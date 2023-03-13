@@ -147,11 +147,8 @@ const ContractForm = {
       state.form.note_item = payload.note_item;
     },
     INSERT_FORM_ASSET_VALUATION(state, payload) {
-      let numericString = payload.asset_valuation.replace(/\D/g, "");
-      let numericValue = parseFloat(numericString.replace(",", "."));
-      console.info(numericValue);
+      let numericValue = numbersOnly(payload.asset_valuation);
       let readAble = formatCurrency(payload.asset_valuation, ".");
-      // console.info(readAble);
       state.form.asset_valuation = numericValue;
       state.form.read_asset_valuation = readAble;
     },
