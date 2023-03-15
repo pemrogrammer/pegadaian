@@ -23,7 +23,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col col sm="12" md="3" style="padding-right: 0px">
+      <b-col col sm="12" md="2" style="padding-right: 0px">
         <b-form-group label="Date Start Contract" label-for="date_start">
           <DatePicker
             id="date_start"
@@ -34,7 +34,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col col sm="12" md="3" style="padding-left: 0px">
+      <b-col col sm="12" md="3">
         <b-form-group label="Due Date of the Contract" label-for="date_end">
           <DatePicker
             id="date_end"
@@ -242,6 +242,10 @@ export default {
     VueSelect,
     DatePicker,
   },
+  mounted() {
+    // option.deposit_fee_paids
+    this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
+  },
   computed: {
     getForm() {
       return this.$store.state.ContractForm.form;
@@ -278,6 +282,7 @@ export default {
         return this.$store.state.ContractForm.form.time_periode;
       },
       set(value) {
+        // console.info(value);
         this.$store.commit("ContractForm/INSERT_FORM_TIME_PERIODE", {
           time_periode: value,
         });
@@ -385,7 +390,7 @@ export default {
     },
     interest_free_loan: {
       get() {
-        return this.$store.state.ContractForm.form.interest_free_loan;
+        return this.$store.state.ContractForm.form.read_interest_free_loan;
       },
       set(value) {
         this.$store.commit("ContractForm/INSERT_FORM_INTEREST_FREE_LOAN", {
@@ -457,6 +462,12 @@ export default {
   watch: {
     time_periode(value, oldValue) {
       this.$store.dispatch("ContractForm/onChangeDateEnd");
+      // option.deposit_fee_paids
+      this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
+    },
+    payment_method(value, oldValue) {
+      // option.deposit_fee_paids
+      this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
     },
     date_start(value) {
       this.$store.dispatch("ContractForm/onChangeDateEnd");

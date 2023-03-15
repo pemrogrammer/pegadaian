@@ -23,6 +23,7 @@ const defaultForm = {
   read_asset_valuation: null,
   // Marhun Bih
   interest_free_loan: null,
+  read_interest_free_loan: null,
   // opsi pembayaran
   payment_method: 1,
   // biaya titip
@@ -147,13 +148,17 @@ const ContractForm = {
       state.form.note_item = payload.note_item;
     },
     INSERT_FORM_ASSET_VALUATION(state, payload) {
-      let numericValue = numbersOnly(payload.asset_valuation);
-      let readAble = formatCurrency(payload.asset_valuation, ".");
+      const numericValue = numbersOnly(payload.asset_valuation);
+      const readAble = formatCurrency(payload.asset_valuation, ".");
       state.form.asset_valuation = numericValue;
       state.form.read_asset_valuation = readAble;
     },
     INSERT_FORM_INTEREST_FREE_LOAN(state, payload) {
-      state.form.interest_free_loan = payload.interest_free_loan;
+      // state.form.interest_free_loan = payload.interest_free_loan;
+      const numericValue = numbersOnly(payload.interest_free_loan);
+      const readAble = formatCurrency(payload.interest_free_loan, ".");
+      state.form.interest_free_loan = numericValue;
+      state.form.read_interest_free_loan = readAble;
     },
     INSERT_FORM_PAYMENT_METHOD(state, payload) {
       state.form.payment_method = payload.payment_method;
@@ -188,9 +193,69 @@ const ContractForm = {
             .format("YYYY-MM-DD")
         )
       });
-    }
+    },
+    onChangeOptionDepositFeePaids: (context, payload) => {
+      // console.info("change option depositif fee paid");
+      const listDepositFeePaid = _conditionDepositeFeePaid(
+        {
+          time_periode: context.state.form.time_periode,
+          payment_method: context.state.form.payment_method,
+        }
+      )
+
+      context.state.form.deposit_fee_paid = 1;
+      context.state.options.deposit_fee_paids = listDepositFeePaid;
+    },
   }
 };
+
+const _conditionDepositeFeePaid = ({ time_periode, payment_method, }) => {
+  let maks = 1;
+  let listDepositFeePaid = [];
+
+  // console.info(time_periode, payment_method);
+
+  if (time_periode == 7) {
+    if (payment_method == 1) {
+      maks = 7;
+    } else if (payment_method == 7) {
+      maks = 1;
+    }
+  } else if (time_periode == 15) {
+    if (payment_method == 1) {
+      maks = 15;
+    } else if (payment_method == 7) {
+      maks = 2;
+    } else if (payment_method == 15) {
+      maks = 1;
+    }
+  } else if (time_periode == 30) {
+    if (payment_method == 1) {
+      maks = 15;
+    } else if (payment_method == 7) {
+      maks = 4;
+    } else if (payment_method == 15) {
+      maks = 2;
+    }
+  } else if (time_periode == 60) {
+    if (payment_method == 1) {
+      maks = 15;
+    } else if (payment_method == 7) {
+      maks = 9;
+    } else if (payment_method == 15) {
+      maks = 4;
+    }
+  }
+
+  for (var i = 1; i <= maks; i++) {
+    listDepositFeePaid.push({
+      value: i,
+      label: i,
+    });
+  }
+
+  return (time_periode && payment_method) ? listDepositFeePaid : [];
+}
 
 export default ContractForm;
 
