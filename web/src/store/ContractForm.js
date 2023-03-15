@@ -4,8 +4,9 @@ import moment from "moment";
 import { formatCurrency, numbersOnly, cleaningNumber } from "../utils";
 
 const defaultForm = {
+  discont: 10000,
   number_id: 11,
-  time_periode: 7,
+  time_period: 7,
   date_start: new Date(moment().format("YYYY-MM-DD")),
   date_end: new Date(moment().add({ day: 7 }).format("YYYY-MM-DD")),
   name_item: null,
@@ -44,7 +45,7 @@ const ContractForm = {
     },
     form: { ...defaultForm },
     options: {
-      time_periodes: [
+      time_periods: [
         {
           label: "7 Days",
           value: 7
@@ -114,14 +115,24 @@ const ContractForm = {
     },
     loading: {
       table: false
+    },
+    settings: {
+      margin: {
+        "electronic": 5, // 5%
+        "vehicle": 10, // 10%
+      },
+      admin_fee: {
+        "electronic": 10000,
+        "vehicle": 50000,
+      }
     }
   },
   mutations: {
     INSERT_FORM_NUMBER_ID(state, payload) {
       state.form.number_id = payload.number_id;
     },
-    INSERT_FORM_TIME_PERIODE(state, payload) {
-      state.form.time_periode = payload.time_periode;
+    INSERT_FORM_TIME_PERIOD(state, payload) {
+      state.form.time_period = payload.time_period;
     },
     INSERT_FORM_DATE_START(state, payload) {
       state.form.date_start = payload.date_start;
@@ -184,12 +195,12 @@ const ContractForm = {
   },
   actions: {
     onChangeDateEnd: (context, payload) => {
-      // console.info(context.state.form.time_periode);
+      // console.info(context.state.form.time_period);
 
       context.commit("INSERT_FORM_DATE_END", {
         date_end: new Date(
           moment(context.state.form.date_start)
-            .add({ day: context.state.form.time_periode })
+            .add({ day: context.state.form.time_period })
             .format("YYYY-MM-DD")
         )
       });
@@ -198,7 +209,7 @@ const ContractForm = {
       // console.info("change option depositif fee paid");
       const listDepositFeePaid = _conditionDepositeFeePaid(
         {
-          time_periode: context.state.form.time_periode,
+          time_period: context.state.form.time_period,
           payment_method: context.state.form.payment_method,
         }
       )
@@ -206,22 +217,38 @@ const ContractForm = {
       context.state.form.deposit_fee_paid = 1;
       context.state.options.deposit_fee_paids = listDepositFeePaid;
     },
+    onChangeDepositFee: (context, payload) => {
+      // console.info("on change commision fee");
+      const getDepositFee = _conditionDepositFee(context.state);
+
+      context.state.form.deposit_fee = getDepositFee;
+    },
+    onChangeDepositFeePaidTotal: (context, payload) => {
+      const getDepositFeeTotal = _conditionDepositFeePaidTotal(
+        {
+          deposit_fee_paid: context.state.form.deposit_fee_paid,
+          deposit_fee: context.state.form.deposit_fee,
+        }
+      );
+
+      context.state.form.deposit_fee_paid_total = getDepositFeeTotal;
+    },
   }
 };
 
-const _conditionDepositeFeePaid = ({ time_periode, payment_method, }) => {
+const _conditionDepositeFeePaid = ({ time_period, payment_method, }) => {
   let maks = 1;
   let listDepositFeePaid = [];
 
-  // console.info(time_periode, payment_method);
+  // console.info(time_period, payment_method);
 
-  if (time_periode == 7) {
+  if (time_period == 7) {
     if (payment_method == 1) {
       maks = 7;
     } else if (payment_method == 7) {
       maks = 1;
     }
-  } else if (time_periode == 15) {
+  } else if (time_period == 15) {
     if (payment_method == 1) {
       maks = 15;
     } else if (payment_method == 7) {
@@ -229,7 +256,7 @@ const _conditionDepositeFeePaid = ({ time_periode, payment_method, }) => {
     } else if (payment_method == 15) {
       maks = 1;
     }
-  } else if (time_periode == 30) {
+  } else if (time_period == 30) {
     if (payment_method == 1) {
       maks = 15;
     } else if (payment_method == 7) {
@@ -237,7 +264,7 @@ const _conditionDepositeFeePaid = ({ time_periode, payment_method, }) => {
     } else if (payment_method == 15) {
       maks = 2;
     }
-  } else if (time_periode == 60) {
+  } else if (time_period == 60) {
     if (payment_method == 1) {
       maks = 15;
     } else if (payment_method == 7) {
@@ -254,7 +281,54 @@ const _conditionDepositeFeePaid = ({ time_periode, payment_method, }) => {
     });
   }
 
-  return (time_periode && payment_method) ? listDepositFeePaid : [];
+  return (time_period && payment_method) ? listDepositFeePaid : [];
+}
+
+/* determine 'biaya titip'
+ * value is 'nilai' from 'marhun_bih', 'opsi_pembayaran', or 'jenis_barang'
+ * option for condition between 'marhun bih', 'opsi_pembayaran' and 'jenis_barang'
+ */
+const _conditionDepositFee = (state) => {
+  const discont = state.form.discont,
+    type_item = state.form.type_item,
+    interest_free_loan = state.form.interest_free_loan != null ? parseInt(numbersOnly(state.form.interest_free_loan)) : 0,
+    payment_method = state.form.payment_method,
+    percent = state.settings.margin[type_item] / 100;
+  let deposit_fee = 0;
+
+  // console.info(state.form);
+  // console.info(discont, type_item, interest_free_loan, payment_method, percent);
+
+  if (payment_method == 1) {
+    deposit_fee = (interest_free_loan * percent - discont) / 2 / 7
+  } else if (payment_method == 7) {
+    deposit_fee = (interest_free_loan * percent - discont) / 2
+  } else if (payment_method == 15) {
+    deposit_fee = interest_free_loan * percent
+  }
+
+  // console.info(interest_free_loan * percent - discont, payment_method);
+
+  deposit_fee = deposit_fee > 0 ? deposit_fee.toFixed(0) : 0;
+  deposit_fee = formatCurrency(deposit_fee, ".");
+
+  // console.info(deposit_fee);
+
+  return deposit_fee;
+}
+
+const _conditionDepositFeePaidTotal = ({ deposit_fee_paid, deposit_fee }) => {
+  let result = 0;
+
+  // console.info(deposit_fee);
+
+  if (deposit_fee_paid != 0 && deposit_fee != null) {
+    result = deposit_fee_paid * parseInt(numbersOnly(deposit_fee));
+    result = formatCurrency(result, "Rp. ");
+  }
+
+
+  return result;
 }
 
 export default ContractForm;

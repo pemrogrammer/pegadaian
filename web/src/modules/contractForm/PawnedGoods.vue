@@ -10,11 +10,11 @@
         </b-form-group>
       </b-col>
       <b-col col sm="12" md="2">
-        <b-form-group label="Time of Periode" label-for="time_periode">
+        <b-form-group label="Time of Periode" label-for="time_period">
           <VueSelect
-            id="time_periode"
+            id="time_period"
             class="cursor-pointer"
-            v-model="time_periode"
+            v-model="time_period"
             placeholder="choose time periode"
             :options="getOptionTimePeriodes"
             :reduce="(data) => data.value"
@@ -165,7 +165,7 @@
       </b-col>
       <b-col col sm="12" md="3">
         <!-- biaya titip -->
-        <b-form-group label="Commision Fee" label-for="deposit_fee">
+        <b-form-group label="Commission Fee" label-for="deposit_fee">
           <b-form-input v-model="deposit_fee" id="deposit_fee" name="deposit_fee" disabled />
         </b-form-group>
       </b-col>
@@ -251,7 +251,7 @@ export default {
       return this.$store.state.ContractForm.form;
     },
     getOptionTimePeriodes() {
-      return this.$store.state.ContractForm.options.time_periodes;
+      return this.$store.state.ContractForm.options.time_periods;
     },
     getOptionPaymentMethods() {
       return this.$store.state.ContractForm.options.payment_methods;
@@ -277,14 +277,14 @@ export default {
         });
       },
     },
-    time_periode: {
+    time_period: {
       get() {
-        return this.$store.state.ContractForm.form.time_periode;
+        return this.$store.state.ContractForm.form.time_period;
       },
       set(value) {
         // console.info(value);
-        this.$store.commit("ContractForm/INSERT_FORM_TIME_PERIODE", {
-          time_periode: value,
+        this.$store.commit("ContractForm/INSERT_FORM_TIME_PERIOD", {
+          time_period: value,
         });
       },
     },
@@ -378,6 +378,7 @@ export default {
         });
       },
     },
+    // taksiran marhun
     asset_valuation: {
       get() {
         return this.$store.state.ContractForm.form.read_asset_valuation;
@@ -388,6 +389,7 @@ export default {
         });
       },
     },
+    // Marhun Bih
     interest_free_loan: {
       get() {
         return this.$store.state.ContractForm.form.read_interest_free_loan;
@@ -460,7 +462,10 @@ export default {
     },
   },
   watch: {
-    time_periode(value, oldValue) {
+    date_start(value) {
+      this.$store.dispatch("ContractForm/onChangeDateEnd");
+    },
+    time_period(value, oldValue) {
       this.$store.dispatch("ContractForm/onChangeDateEnd");
       // option.deposit_fee_paids
       this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
@@ -469,8 +474,13 @@ export default {
       // option.deposit_fee_paids
       this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
     },
-    date_start(value) {
-      this.$store.dispatch("ContractForm/onChangeDateEnd");
+    interest_free_loan(value, oldValue) {
+      // option.deposit_fee_paids
+      this.$store.dispatch("ContractForm/onChangeDepositFee");
+      this.$store.dispatch("ContractForm/onChangeDepositFeePaidTotal");
+    },
+    deposit_fee_paid(value, oldValue) {
+      this.$store.dispatch("ContractForm/onChangeDepositFeePaidTotal");
     },
     type_item(value) {
       this.$store.commit("ContractForm/INSERT_FORM_TYPE_SUB_ITEM", {
