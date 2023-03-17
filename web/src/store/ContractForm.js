@@ -39,48 +39,48 @@ const ContractForm = {
     options: {
       term_contracts: [
         {
-          id: 7,
+          value: 7,
           label: 7
         },
         {
-          id: 14,
+          value: 14,
           label: 14
         }
       ],
       type_items: [
-        { text: "Electronic", value: "electronic" },
-        { text: "Transport", value: "transport" }
+        { label: "Electronic", value: "electronic" },
+        { label: "Transport", value: "transport" }
       ],
       type_sub_items: {
         electronic: [
           {
-            text: "Smartphone",
+            label: "Smartphone",
             value: "smartphone"
           },
           {
-            text: "Laptop / PC",
+            label: "Laptop / PC",
             value: "laptop / pc"
           },
           {
-            text: "Kamera",
+            label: "Kamera",
             value: "camera"
           },
           {
-            text: "TV",
+            label: "TV",
             value: "tv"
           },
           {
-            text: "Dan lain lain",
+            label: "Dan lain lain",
             value: "etc"
           }
         ],
         transport: [
           {
-            text: "Motor",
+            label: "Motor",
             value: "motor cycle"
           },
           {
-            text: "Mobil",
+            label: "Mobil",
             value: "Car"
           }
         ]

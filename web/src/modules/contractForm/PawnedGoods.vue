@@ -17,7 +17,7 @@
             v-model="term_contract"
             placeholder="Pilih Departemen"
             :options="getOptionTermContracts"
-            :reduce="(data) => data.id"
+            :reduce="(data) => data.value"
             label="label"
             searchable
           />
