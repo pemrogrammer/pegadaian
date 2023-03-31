@@ -1,7 +1,12 @@
 export const cleaningNumber = (value) => value?.toString().replace(/\./g, "");
 
 // export const numbersOnly = (value) => value.replace(/[^\d]/g, "");
-export const numbersOnly = (value) => value.replace(/\./g, '').replace(',', '.');
+export const numbersOnly = (value) => {
+  console.info(typeof value);
+
+  const cleaned = value.toString().replace(/[^0-9,]/g, '').replace(',', '.');
+  return Number(cleaned);
+}
 
 /* Fungsi formatRupiah */
 export const formatCurrency = (value, prefix) => {
@@ -23,5 +28,5 @@ export const formatCurrency = (value, prefix) => {
 
   rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
   // return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-  return prefix == undefined ? rupiah : rupiah ? rupiah : "";
+  return prefix == undefined ? rupiah : rupiah ? prefix + rupiah : "";
 };

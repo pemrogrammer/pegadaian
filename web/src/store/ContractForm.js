@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 
-import { formatCurrency, numbersOnly, cleaningNumber } from "../utils";
+import { formatCurrency, numbersOnly, cleaningNumber } from "@/utils/helpers";
 
 const defaultForm = {
   discont: 10000,
@@ -160,14 +160,14 @@ const ContractForm = {
     },
     INSERT_FORM_ASSET_VALUATION(state, payload) {
       const numericValue = numbersOnly(payload.asset_valuation);
-      const readAble = formatCurrency(payload.asset_valuation, ".");
+      const readAble = formatCurrency(payload.asset_valuation, 'Rp ');
       state.form.asset_valuation = numericValue;
       state.form.read_asset_valuation = readAble;
     },
     INSERT_FORM_INTEREST_FREE_LOAN(state, payload) {
       // state.form.interest_free_loan = payload.interest_free_loan;
       const numericValue = numbersOnly(payload.interest_free_loan);
-      const readAble = formatCurrency(payload.interest_free_loan, ".");
+      const readAble = formatCurrency(payload.interest_free_loan, 'Rp ');
       state.form.interest_free_loan = numericValue;
       state.form.read_interest_free_loan = readAble;
     },
@@ -310,7 +310,7 @@ const _conditionDepositFee = (state) => {
   // console.info(interest_free_loan * percent - discont, payment_method);
 
   deposit_fee = deposit_fee > 0 ? deposit_fee.toFixed(0) : 0;
-  deposit_fee = formatCurrency(deposit_fee, ".");
+  deposit_fee = formatCurrency(deposit_fee, 'Rp ');
 
   // console.info(deposit_fee);
 
@@ -324,7 +324,7 @@ const _conditionDepositFeePaidTotal = ({ deposit_fee_paid, deposit_fee }) => {
 
   if (deposit_fee_paid != 0 && deposit_fee != null) {
     result = deposit_fee_paid * parseInt(numbersOnly(deposit_fee));
-    result = formatCurrency(result, "Rp. ");
+    result = formatCurrency(result, "Rp ");
   }
 
 

@@ -211,16 +211,11 @@
         </b-form-group>
       </b-col>
     </b-row>
-    <br />
-    <b-row>
-      <b-col cols>
-        <b-button
-          class="float-right ml-4"
-          variant="success"
-          @click="onSend()"
-          :disabled="is_loading"
-        >Kirim</b-button>
-        <b-button class="float-right" variant="outline-danger" @click="onClearForm()">Batal</b-button>
+    <b-row style="margin-top: 40px">
+      <b-col cols></b-col>
+      <b-col col md="2" style="text-align-last: right;">
+        <b-button class variant="danger" style="margin-right: 20px;" @click="onClearForm()">Batal</b-button>
+        <b-button class variant="success" @click="onSend()" :disabled="is_loading">Kirim</b-button>
       </b-col>
     </b-row>
   </div>

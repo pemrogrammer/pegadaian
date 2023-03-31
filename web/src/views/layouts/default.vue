@@ -30,18 +30,18 @@
                 <span class="align-middle">Make a Contract</span>
               </b-link>
             </li>
-            <li class="sidebar-item" :class="setActive('contractData')">
+            <li class="sidebar-item" :class="setActive('contractTable')">
               <b-link
                 class="sidebar-link"
-                @click="onClickMenu('contractData')"
-                :to="{ name: 'contractData' }"
+                @click="onClickMenu('contractTable')"
+                :to="{ name: 'contractTable' }"
               >
                 <i class="align-middle" data-feather="database"></i>
                 <span class="align-middle">Data Contract</span>
               </b-link>
             </li>
             <li class="sidebar-header">Master</li>
-            <li class="sidebar-item" :class="setActive('customerData')">
+            <!-- <li class="sidebar-item" :class="setActive('customerData')">
               <b-link
                 class="sidebar-link"
                 @click="onClickMenu('customerData')"
@@ -50,7 +50,7 @@
                 <i class="align-middle" data-feather="persons"></i>
                 <span class="align-middle">Data Customer</span>
               </b-link>
-            </li>
+            </li>-->
           </ul>
         </div>
       </nav>
