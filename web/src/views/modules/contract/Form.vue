@@ -4,27 +4,35 @@
       <b-card no-body>
         <b-card-header header-tag="nav">
           <b-tabs content-class="mt-3">
-            <b-tab title="Pawned Items" active>
-              <PawnedGoods />
+            <b-tab
+              title="Pawned Items"
+              :active="onActiveTab('item')"
+              :disabled="!onActiveTab('item')"
+            >
+              <PawnedItem />
             </b-tab>
-            <b-tab title="Customer Data">
+            <b-tab
+              title="Customer Data"
+              :active="onActiveTab('customer')"
+              :disabled="!onActiveTab('customer')"
+            >
               <CustomerData />
-            </b-tab>
-            <b-tab title="Confirm Data">
-              <ConfirmData />
             </b-tab>
           </b-tabs>
         </b-card-header>
       </b-card>
     </div>
+
+    <FormConfirmData />
   </div>
 </template>
 
 <script>
 // partials
-import PawnedGoods from "@/views/modules/contract/FormPawnedGoods";
+import PawnedItem from "@/views/modules/contract/FormPawnedItem";
 import CustomerData from "@/views/modules/contract/FormCustomerData";
 import ConfirmData from "@/views/modules/contract/FormConfirmData";
+import FormConfirmData from "./FormConfirmData.vue";
 
 export default {
   data() {
@@ -33,13 +41,22 @@ export default {
     };
   },
   components: {
-    PawnedGoods,
+    PawnedItem,
     CustomerData,
     ConfirmData,
+    FormConfirmData,
+  },
+  computed: {
+    tab_active() {
+      return this.$store.state.Contract.tab_active;
+    },
   },
   methods: {
     onComplete() {
       console.info("complete");
+    },
+    onActiveTab(name_tab) {
+      return this.tab_active == name_tab ? true : false;
     },
   },
 };
