@@ -2,7 +2,7 @@ export const cleaningNumber = (value) => value?.toString().replace(/\./g, "");
 
 // export const numbersOnly = (value) => value.replace(/[^\d]/g, "");
 export const numbersOnly = (value) => {
-  console.info(typeof value);
+  // console.info(typeof value);
 
   const cleaned = value.toString().replace(/[^0-9,]/g, '').replace(',', '.');
   return Number(cleaned);

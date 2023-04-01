@@ -21,17 +21,21 @@ const defaultForm = {
   mentioned_marhun_bih: null,
   // taksiran marhun
   asset_valuation: null,
-  read_asset_valuation: null,
+  asset_valuation_read: null,
   // Marhun Bih
   interest_free_loan: null,
-  read_interest_free_loan: null,
+  interest_free_loan_read: null,
   // opsi pembayaran
   payment_method: 1,
   // biaya titip
-  deposit_fee: null,
+  comission_fee: null,
+  comission_fee_read: null,
+  comission_fee_paid: null,
+  comission_fee_paid_read: null,
+  comission_fee_paid_total: null,
+  comission_fee_paid_total_read: null,
+  //
   admin_fee: null,
-  deposit_fee_paid: null,
-  deposit_fee_paid_total: "50.000",
   in_text: null
 };
 
@@ -47,14 +51,6 @@ const ContractForm = {
     options: {
       time_periods: [
         {
-<<<<<<< HEAD
-          value: 7,
-          label: 7
-        },
-        {
-          value: 14,
-          label: 14
-=======
           label: "7 Days",
           value: 7
         },
@@ -79,12 +75,11 @@ const ContractForm = {
         {
           value: 7,
           label: "7 Days"
->>>>>>> 5249e4bf29f6179e9008617123153ed8479187de
         }
       ],
       type_items: [
         { label: "Electronic", value: "electronic" },
-        { label: "Transport", value: "transport" }
+        { label: "Transportation", value: "transportation" }
       ],
       type_sub_items: {
         electronic: [
@@ -109,7 +104,7 @@ const ContractForm = {
             value: "etc"
           }
         ],
-        transport: [
+        transportation: [
           {
             label: "Motor",
             value: "motor cycle"
@@ -120,7 +115,11 @@ const ContractForm = {
           }
         ]
       },
-      deposit_fee_paids: []
+      comission_fee_paids: [],
+      admin_fee: {
+        electronic: 5000,
+        transportation: 10000,
+      }
     },
     loading: {
       table: false
@@ -128,11 +127,11 @@ const ContractForm = {
     settings: {
       margin: {
         "electronic": 5, // 5%
-        "vehicle": 10, // 10%
+        "transportation": 10, // 10%
       },
       admin_fee: {
         "electronic": 10000,
-        "vehicle": 50000,
+        "transportation": 50000,
       }
     }
   },
@@ -151,6 +150,9 @@ const ContractForm = {
     },
     INSERT_FORM_TYPE_ITEM(state, payload) {
       state.form.type_item = payload.type_item;
+    },
+    INSERT_FORM_NAME_ITEM(state, payload) {
+      state.form.name_item = payload.name_item;
     },
     INSERT_FORM_TYPE_SUB_ITEM(state, payload) {
       state.form.type_sub_item = payload.type_sub_item;
@@ -171,26 +173,37 @@ const ContractForm = {
       const numericValue = numbersOnly(payload.asset_valuation);
       const readAble = formatCurrency(payload.asset_valuation, 'Rp ');
       state.form.asset_valuation = numericValue;
-      state.form.read_asset_valuation = readAble;
+      state.form.asset_valuation_read = readAble;
     },
     INSERT_FORM_INTEREST_FREE_LOAN(state, payload) {
       // state.form.interest_free_loan = payload.interest_free_loan;
       const numericValue = numbersOnly(payload.interest_free_loan);
       const readAble = formatCurrency(payload.interest_free_loan, 'Rp ');
       state.form.interest_free_loan = numericValue;
-      state.form.read_interest_free_loan = readAble;
+      state.form.interest_free_loan_read = readAble;
     },
     INSERT_FORM_PAYMENT_METHOD(state, payload) {
       state.form.payment_method = payload.payment_method;
     },
-    INSERT_FORM_DEPOSIT_FEE(state, payload) {
-      state.form.deposit_fee = payload.deposit_fee;
+    INSERT_FORM_COMISSION_FEE(state, payload) {
+      const numericValue = numbersOnly(payload.comission_fee);
+      const readAble = formatCurrency(payload.comission_fee, 'Rp ');
+      state.form.comission_fee = numericValue;
+      state.form.comission_fee_read = readAble;
     },
-    INSERT_FORM_DEPOSIT_FEE_PAID(state, payload) {
-      state.form.deposit_fee_paid = payload.deposit_fee_paid;
+    INSERT_FORM_COMISSION_FEE_PAID(state, payload) {
+      state.form.comission_fee_paid = payload.comission_fee_paid;
+      // const numericValue = numbersOnly(payload.comission_fee_paid);
+      // const readAble = formatCurrency(payload.comission_fee_paid, 'Rp ');
+      // state.form.comission_fee_paid = numericValue;
+      // state.form.comission_fee_paid_read = readAble;
     },
-    INSERT_FORM_DEPOSIT_FEE_PAID_TOTAL(state, payload) {
-      state.form.deposit_fee_paid_total = payload.deposit_fee_paid_total;
+    INSERT_FORM_COMISSION_FEE_PAID_TOTAL(state, payload) {
+      // state.form.comission_fee_paid_total = payload.comission_fee_paid_total;
+      const numericValue = numbersOnly(payload.comission_fee_paid_total);
+      const readAble = formatCurrency(payload.comission_fee_paid_total, 'Rp ');
+      state.form.comission_fee_paid_total = numericValue;
+      state.form.comission_fee_paid_total_read = readAble;
     },
     INSERT_FORM_ADMIN_FEE(state, payload) {
       state.form.admin_fee = payload.admin_fee;
@@ -214,40 +227,42 @@ const ContractForm = {
         )
       });
     },
-    onChangeOptionDepositFeePaids: (context, payload) => {
-      // console.info("change option depositif fee paid");
-      const listDepositFeePaid = _conditionDepositeFeePaid(
+    onChangeOptionComissionFeePaids: (context, payload) => {
+      // console.info("change option Comissionif fee paid");
+      const listComissionFeePaid = _conditionComissionFeePaid(
         {
           time_period: context.state.form.time_period,
           payment_method: context.state.form.payment_method,
         }
       )
 
-      context.state.form.deposit_fee_paid = 1;
-      context.state.options.deposit_fee_paids = listDepositFeePaid;
+      context.state.form.comission_fee_paid = 1;
+      context.state.options.comission_fee_paids = listComissionFeePaid;
     },
-    onChangeDepositFee: (context, payload) => {
+    onChangeComissionFee: (context, payload) => {
       // console.info("on change commision fee");
-      const getDepositFee = _conditionDepositFee(context.state);
+      const getComissionFee = _conditionComissionFee(context.state);
 
-      context.state.form.deposit_fee = getDepositFee;
+      // context.state.form.comission_fee = getComissionFee;
+      context.commit("INSERT_FORM_COMISSION_FEE", { comission_fee: getComissionFee });
     },
-    onChangeDepositFeePaidTotal: (context, payload) => {
-      const getDepositFeeTotal = _conditionDepositFeePaidTotal(
+    onChangeComissionFeePaidTotal: (context, payload) => {
+      const getComissionFeePaidTotal = _conditionComissionFeePaidTotal(
         {
-          deposit_fee_paid: context.state.form.deposit_fee_paid,
-          deposit_fee: context.state.form.deposit_fee,
+          comission_fee_paid: context.state.form.comission_fee_paid,
+          comission_fee: context.state.form.comission_fee,
         }
       );
 
-      context.state.form.deposit_fee_paid_total = getDepositFeeTotal;
+      // context.state.form.comission_fee_paid_total = getComissionFeePaidTotal;
+      context.commit("INSERT_FORM_COMISSION_FEE_PAID_TOTAL", { comission_fee_paid_total: getComissionFeePaidTotal });
     },
   }
 };
 
-const _conditionDepositeFeePaid = ({ time_period, payment_method, }) => {
+const _conditionComissionFeePaid = ({ time_period, payment_method, }) => {
   let maks = 1;
-  let listDepositFeePaid = [];
+  let listComissionFeePaid = [];
 
   // console.info(time_period, payment_method);
 
@@ -284,55 +299,55 @@ const _conditionDepositeFeePaid = ({ time_period, payment_method, }) => {
   }
 
   for (var i = 1; i <= maks; i++) {
-    listDepositFeePaid.push({
+    listComissionFeePaid.push({
       value: i,
       label: i,
     });
   }
 
-  return (time_period && payment_method) ? listDepositFeePaid : [];
+  return (time_period && payment_method) ? listComissionFeePaid : [];
 }
 
 /* determine 'biaya titip'
  * value is 'nilai' from 'marhun_bih', 'opsi_pembayaran', or 'jenis_barang'
  * option for condition between 'marhun bih', 'opsi_pembayaran' and 'jenis_barang'
  */
-const _conditionDepositFee = (state) => {
+const _conditionComissionFee = (state) => {
   const discont = state.form.discont,
     type_item = state.form.type_item,
     interest_free_loan = state.form.interest_free_loan != null ? parseInt(numbersOnly(state.form.interest_free_loan)) : 0,
     payment_method = state.form.payment_method,
     percent = state.settings.margin[type_item] / 100;
-  let deposit_fee = 0;
+  let comission_fee = 0;
 
   // console.info(state.form);
   // console.info(discont, type_item, interest_free_loan, payment_method, percent);
 
   if (payment_method == 1) {
-    deposit_fee = (interest_free_loan * percent - discont) / 2 / 7
+    comission_fee = (interest_free_loan * percent - discont) / 2 / 7
   } else if (payment_method == 7) {
-    deposit_fee = (interest_free_loan * percent - discont) / 2
+    comission_fee = (interest_free_loan * percent - discont) / 2
   } else if (payment_method == 15) {
-    deposit_fee = interest_free_loan * percent
+    comission_fee = interest_free_loan * percent
   }
 
   // console.info(interest_free_loan * percent - discont, payment_method);
 
-  deposit_fee = deposit_fee > 0 ? deposit_fee.toFixed(0) : 0;
-  deposit_fee = formatCurrency(deposit_fee, 'Rp ');
+  comission_fee = comission_fee > 0 ? comission_fee.toFixed(0) : 0;
+  comission_fee = formatCurrency(comission_fee, 'Rp ');
 
-  // console.info(deposit_fee);
+  // console.info(comission_fee);
 
-  return deposit_fee;
+  return comission_fee;
 }
 
-const _conditionDepositFeePaidTotal = ({ deposit_fee_paid, deposit_fee }) => {
+const _conditionComissionFeePaidTotal = ({ comission_fee_paid, comission_fee }) => {
   let result = 0;
 
-  // console.info(deposit_fee);
+  // console.info(comission_fee);
 
-  if (deposit_fee_paid != 0 && deposit_fee != null) {
-    result = deposit_fee_paid * parseInt(numbersOnly(deposit_fee));
+  if (comission_fee_paid != 0 && comission_fee != null) {
+    result = comission_fee_paid * parseInt(numbersOnly(comission_fee));
     result = formatCurrency(result, "Rp ");
   }
 

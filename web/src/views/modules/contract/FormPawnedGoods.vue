@@ -14,15 +14,9 @@
           <VueSelect
             id="time_period"
             class="cursor-pointer"
-<<<<<<< HEAD
-            v-model="term_contract"
-            placeholder="Pilih Departemen"
-            :options="getOptionTermContracts"
-=======
             v-model="time_period"
             placeholder="choose time periode"
             :options="getOptionTimePeriodes"
->>>>>>> 5249e4bf29f6179e9008617123153ed8479187de
             :reduce="(data) => data.value"
             label="label"
             searchable
@@ -72,7 +66,7 @@
             placeholder="choose item"
             :options="getOptionTypeItems"
             :reduce="(data) => data.value"
-            label="text"
+            label="label"
             searchable
           />
         </b-form-group>
@@ -86,7 +80,7 @@
             placeholder="choose sub item"
             :options="getOptionTypeSubItems"
             :reduce="(data) => data.value"
-            label="text"
+            label="label"
             searchable
           />
         </b-form-group>
@@ -171,8 +165,8 @@
       </b-col>
       <b-col col sm="12" md="3">
         <!-- biaya titip -->
-        <b-form-group label="Commission Fee" label-for="deposit_fee">
-          <b-form-input v-model="deposit_fee" id="deposit_fee" name="deposit_fee" disabled />
+        <b-form-group label="Comission Fee" label-for="comission_fee">
+          <b-form-input v-model="comission_fee" id="comission_fee" name="comission_fee" disabled />
         </b-form-group>
       </b-col>
     </b-row>
@@ -180,13 +174,13 @@
     <b-row>
       <b-col col sm="12" md="3">
         <!-- Biaya Titip yang Dibayar -->
-        <b-form-group label="Deposit Fee Paided" label-for="deposit_fee_paid">
+        <b-form-group label="Comission Fee Paided" label-for="comission_fee_paid">
           <VueSelect
-            id="deposit_fee_paid"
+            id="comission_fee_paid"
             class="cursor-pointer"
-            v-model="deposit_fee_paid"
-            placeholder="choose deposit paid"
-            :options="getOptionDepositFeePaids"
+            v-model="comission_fee_paid"
+            placeholder="choose comission paid"
+            :options="getOptionComissionFeePaids"
             :reduce="(data) => data.value"
             label="label"
             searchable
@@ -195,11 +189,11 @@
       </b-col>
       <b-col col sm="12" md="3">
         <!-- Jumlah Biaya Titip yang Dibayar -->
-        <b-form-group label="Total Deposit Fee Paided" label-for="deposit_fee_paid_total">
+        <b-form-group label="Total Comission Fee Paided" label-for="comission_fee_paid_total">
           <b-form-input
-            v-model="deposit_fee_paid_total"
-            id="deposit_fee_paid_total"
-            name="deposit_fee_paid_total"
+            v-model="comission_fee_paid_total"
+            id="comission_fee_paid_total"
+            name="comission_fee_paid_total"
             disabled
           />
         </b-form-group>
@@ -227,280 +221,6 @@
   </div>
 </template>
 
-<script>
-import axios from "axios";
-import moment from "moment";
-import VueSelect from "vue-select";
-import DatePicker from "vue2-datepicker";
-
-export default {
-  data() {
-    return {
-      is_loading: false,
-    };
-  },
-  components: {
-    VueSelect,
-    DatePicker,
-  },
-  mounted() {
-    // option.deposit_fee_paids
-    this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
-  },
-  computed: {
-    getForm() {
-      return this.$store.state.ContractForm.form;
-    },
-    getOptionTimePeriodes() {
-      return this.$store.state.ContractForm.options.time_periods;
-    },
-    getOptionPaymentMethods() {
-      return this.$store.state.ContractForm.options.payment_methods;
-    },
-    getOptionTypeItems() {
-      return this.$store.state.ContractForm.options.type_items;
-    },
-    getOptionTypeSubItems() {
-      return this.$store.state.ContractForm.options.type_sub_items[
-        this.type_item
-      ];
-    },
-    getOptionDepositFeePaids() {
-      return this.$store.state.ContractForm.options.deposit_fee_paids;
-    },
-    number_id: {
-      get() {
-        return this.$store.state.ContractForm.form.number_id;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_NUMBER_ID", {
-          number_id: value,
-        });
-      },
-    },
-    time_period: {
-      get() {
-        return this.$store.state.ContractForm.form.time_period;
-      },
-      set(value) {
-        // console.info(value);
-        this.$store.commit("ContractForm/INSERT_FORM_TIME_PERIOD", {
-          time_period: value,
-        });
-      },
-    },
-    date_start: {
-      get() {
-        return this.$store.state.ContractForm.form.date_start;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_DATE_START", {
-          date_start: value,
-        });
-      },
-    },
-    date_end: {
-      get() {
-        return this.$store.state.ContractForm.form.date_end;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_DATE_END", {
-          date_end: value,
-        });
-      },
-    },
-    name_item: {
-      get() {
-        return this.$store.state.ContractForm.form.name_item;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_NAME_ITEM", {
-          name_item: value,
-        });
-      },
-    },
-    type_item: {
-      get() {
-        return this.$store.state.ContractForm.form.type_item;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_TYPE_ITEM", {
-          type_item: value,
-        });
-      },
-    },
-    type_sub_item: {
-      get() {
-        return this.$store.state.ContractForm.form.type_sub_item;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_TYPE_SUB_ITEM", {
-          type_sub_item: value,
-        });
-      },
-    },
-    etc: {
-      get() {
-        return this.$store.state.ContractForm.form.etc;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_ETC", {
-          etc: value,
-        });
-      },
-    },
-    complete_item: {
-      get() {
-        return this.$store.state.ContractForm.form.complete_item;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_COMPLETE_ITEM", {
-          complete_item: value,
-        });
-      },
-    },
-    deficiency_item: {
-      get() {
-        return this.$store.state.ContractForm.form.deficiency_item;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_DEFICIENCY_ITEM", {
-          deficiency_item: value,
-        });
-      },
-    },
-    note_item: {
-      get() {
-        return this.$store.state.ContractForm.form.note_item;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_NOTE_ITEM", {
-          note_item: value,
-        });
-      },
-    },
-    // taksiran marhun
-    asset_valuation: {
-      get() {
-        return this.$store.state.ContractForm.form.read_asset_valuation;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_ASSET_VALUATION", {
-          asset_valuation: value,
-        });
-      },
-    },
-    // Marhun Bih
-    interest_free_loan: {
-      get() {
-        return this.$store.state.ContractForm.form.read_interest_free_loan;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_INTEREST_FREE_LOAN", {
-          interest_free_loan: value,
-        });
-      },
-    },
-    payment_method: {
-      get() {
-        return this.$store.state.ContractForm.form.payment_method;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_PAYMENT_METHOD", {
-          payment_method: value,
-        });
-      },
-    },
-    deposit_fee: {
-      get() {
-        return this.$store.state.ContractForm.form.deposit_fee;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE", {
-          deposit_fee: value,
-        });
-      },
-    },
-    deposit_fee_paid: {
-      get() {
-        return this.$store.state.ContractForm.form.deposit_fee_paid;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE_PAID", {
-          deposit_fee_paid: value,
-        });
-      },
-    },
-    deposit_fee_paid_total: {
-      get() {
-        return this.$store.state.ContractForm.form.deposit_fee_paid_total;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE_PAID_TOTAL", {
-          deposit_fee_paid_total: value,
-        });
-      },
-    },
-    admin_fee: {
-      get() {
-        return this.$store.state.ContractForm.form.admin_fee;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_ADMIN_FEE", {
-          admin_fee: value,
-        });
-      },
-    },
-    in_text: {
-      get() {
-        return this.$store.state.ContractForm.form.in_text;
-      },
-      set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_IN_TEXT", {
-          in_text: value,
-        });
-      },
-    },
-  },
-  watch: {
-    date_start(value) {
-      this.$store.dispatch("ContractForm/onChangeDateEnd");
-    },
-    time_period(value, oldValue) {
-      this.$store.dispatch("ContractForm/onChangeDateEnd");
-      // option.deposit_fee_paids
-      this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
-    },
-    payment_method(value, oldValue) {
-      // option.deposit_fee_paids
-      this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
-    },
-    interest_free_loan(value, oldValue) {
-      // option.deposit_fee_paids
-      this.$store.dispatch("ContractForm/onChangeDepositFee");
-      this.$store.dispatch("ContractForm/onChangeDepositFeePaidTotal");
-    },
-    deposit_fee_paid(value, oldValue) {
-      this.$store.dispatch("ContractForm/onChangeDepositFeePaidTotal");
-    },
-    type_item(value) {
-      this.$store.commit("ContractForm/INSERT_FORM_TYPE_SUB_ITEM", {
-        type_sub_item: "",
-      });
-    },
-  },
-  methods: {
-    onSend() {
-      console.info(this.getForm);
-    },
-    onClearForm() {
-      this.$store.commit("ContractForm/CLEAR_FORM");
-    },
-    onChooseTypeItem(value) {
-      console.info(value);
-    },
-  },
-};
-</script>
+<script src="./FormPawnedGoodsScript.js"></script>
 
 <style lang="scss" scoped></style>
