@@ -1,11 +1,7 @@
 {
-  "folders": [
-	{
-		"path": "."
-	},
-	{
-		"path": "../source"
-	}
-],
-  "settings": {}
+	"folders": [
+		{
+			"path": ".."
+		}
+	]
 }

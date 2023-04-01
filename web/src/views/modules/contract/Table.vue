@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import CustomerPawn from "@/modules/contractData/CustomerPawn";
-import MaturityContract from "@/modules/contractData/MaturityContract";
-import SettlementAuction from "@/modules/contractData/SettlementAuction";
+import CustomerPawn from "@/views/modules/contract/TableCustomerPawn";
+import MaturityContract from "@/views/modules/contract/TableMaturityContract";
+import SettlementAuction from "@/views/modules/contract/TableSettlementAuction";
 
 export default {
   data() {

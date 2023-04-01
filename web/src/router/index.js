@@ -4,11 +4,11 @@ import VueRouter from "vue-router";
 // layouts
 import Default from "@/views/layouts/default.vue";
 
-// pages
-import Dashboard from "@/views/pages/Dashboard.vue";
-import ContractForm from "@/views/pages/ContractForm.vue";
-import ContractData from "@/views/pages/ContractData.vue";
-import CustomerData from "@/views/pages/CustomerData.vue";
+// main modules
+import Dashboard from "@/views/modules/Dashboard.vue";
+import ContractForm from "@/views/modules/contract/Form.vue";
+import ContractTable from "@/views/modules//contract/Table.vue";
+// import CustomerData from "@/views/modules/CustomerData.vue";
 
 Vue.use(VueRouter);
 
@@ -38,17 +38,17 @@ const routes = [
         },
         {
           path: "/data",
-          name: "contractData",
-          component: ContractData,
+          name: "contractTable",
+          component: ContractTable,
         },
       ]),
-      ...prefixRoutes("/customer", [
-        {
-          path: "/data",
-          name: "customerData",
-          component: CustomerData,
-        },
-      ]),
+      // ...prefixRoutes("/customer", [
+      //   {
+      //     path: "/data",
+      //     name: "customerData",
+      //     component: CustomerData,
+      //   },
+      // ]),
     ],
   },
 

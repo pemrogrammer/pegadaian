@@ -22,9 +22,9 @@
 
 <script>
 // partials
-import PawnedGoods from "@/modules/contractForm/PawnedGoods";
-import CustomerData from "@/modules/contractForm/CustomerData";
-import ConfirmData from "@/modules/contractForm/ConfirmData";
+import PawnedGoods from "@/views/modules/contract/FormPawnedGoods";
+import CustomerData from "@/views/modules/contract/FormCustomerData";
+import ConfirmData from "@/views/modules/contract/FormConfirmData";
 
 export default {
   data() {
