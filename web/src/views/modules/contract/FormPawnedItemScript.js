@@ -263,8 +263,20 @@ export default {
     },
   },
   methods: {
-    onSend() {
-      console.info(this.getForm);
+    onChangeTab(tab_active) {
+      // let tab_active = null;
+
+      // if (name_tab == "item") {
+      //   if (direction == "next") {
+      //     tab_active = "customer";
+      //   } else if (direction == "prev") {
+      //     tab_active = "item";
+      //   }
+      // }
+
+      this.$store.commit("ContractForm/UPDATE_TAB_ACTIVE", {
+        tab_active: tab_active,
+      });
     },
     onClearForm() {
       this.$store.commit("contractForm/CLEAR_FORM");

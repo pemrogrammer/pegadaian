@@ -132,7 +132,8 @@ const ContractForm = {
         "electronic": 10000,
         "transportation": 50000,
       }
-    }
+    },
+    tab_active: "item", // item, customer, confirm
   },
   mutations: {
     INSERT_FORM_NUMBER_ID(state, payload) {
@@ -222,6 +223,9 @@ const ContractForm = {
       }
 
       state.form.in_text = mentionInterestFreeloan;
+    },
+    UPDATE_TAB_ACTIVE(state, payload) {
+      state.tab_active = payload.tab_active;
     },
     CLEAR_FORM(state, payload) {
       state.form = { ...defaultForm };

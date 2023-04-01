@@ -214,13 +214,18 @@
     <b-row style="margin-top: 40px">
       <b-col cols></b-col>
       <b-col col md="2" style="text-align-last: right;">
-        <b-button class variant="danger" style="margin-right: 20px;" @click="onClearForm()">Batal</b-button>
-        <b-button class variant="success" @click="onSend()" :disabled="is_loading">Kirim</b-button>
+        <!-- <b-button class variant="danger" style="margin-right: 20px;" @click="onClearForm()">Batal</b-button> -->
+        <b-button
+          class
+          variant="success"
+          @click="onChangeTab('customer')"
+          :disabled="is_loading"
+        >Next</b-button>
       </b-col>
     </b-row>
   </div>
 </template>
 
-<script src="./FormPawnedGoodsScript.js"></script>
+<script src="./FormPawnedItemScript.js"></script>
 
 <style lang="scss" scoped></style>

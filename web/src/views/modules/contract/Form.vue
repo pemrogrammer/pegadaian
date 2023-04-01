@@ -4,13 +4,25 @@
       <b-card no-body>
         <b-card-header header-tag="nav">
           <b-tabs content-class="mt-3">
-            <b-tab title="Pawned Items" active>
-              <PawnedGoods />
+            <b-tab
+              title="Pawned Items"
+              :active="onActiveTab('item')"
+              :disabled="!onActiveTab('item')"
+            >
+              <PawnedItem />
             </b-tab>
-            <b-tab title="Customer Data">
+            <b-tab
+              title="Customer Data"
+              :active="onActiveTab('customer')"
+              :disabled="!onActiveTab('customer')"
+            >
               <CustomerData />
             </b-tab>
-            <b-tab title="Confirm Data">
+            <b-tab
+              title="Confirm Data"
+              :active="onActiveTab('confirm')"
+              :disabled="!onActiveTab('confirm')"
+            >
               <ConfirmData />
             </b-tab>
           </b-tabs>
@@ -22,7 +34,7 @@
 
 <script>
 // partials
-import PawnedGoods from "@/views/modules/contract/FormPawnedGoods";
+import PawnedItem from "@/views/modules/contract/FormPawnedItem";
 import CustomerData from "@/views/modules/contract/FormCustomerData";
 import ConfirmData from "@/views/modules/contract/FormConfirmData";
 
@@ -33,13 +45,21 @@ export default {
     };
   },
   components: {
-    PawnedGoods,
+    PawnedItem,
     CustomerData,
     ConfirmData,
+  },
+  computed: {
+    tab_active() {
+      return this.$store.state.ContractForm.tab_active;
+    },
   },
   methods: {
     onComplete() {
       console.info("complete");
+    },
+    onActiveTab(name_tab) {
+      return this.tab_active == name_tab ? true : false;
     },
   },
 };
