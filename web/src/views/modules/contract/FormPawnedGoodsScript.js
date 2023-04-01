@@ -212,7 +212,7 @@ export default {
     },
     admin_fee: {
       get() {
-        return this.$store.state.ContractForm.form.admin_fee;
+        return this.$store.state.ContractForm.form.admin_fee_read;
       },
       set(value) {
         this.$store.commit("ContractForm/INSERT_FORM_ADMIN_FEE", {
@@ -244,10 +244,13 @@ export default {
       // option.Comission_fee_paids
       this.$store.dispatch("ContractForm/onChangeOptionComissionFeePaids");
     },
+    // marhun bih
     interest_free_loan(value, oldValue) {
       // option.Comission_fee_paids
       this.$store.dispatch("ContractForm/onChangeComissionFee");
       this.$store.dispatch("ContractForm/onChangeComissionFeePaidTotal");
+
+      this.$store.commit("ContractForm/INSERT_FORM_IN_TEXT");
     },
     comission_fee_paid(value, oldValue) {
       this.$store.dispatch("ContractForm/onChangeComissionFeePaidTotal");
@@ -256,6 +259,7 @@ export default {
       this.$store.commit("ContractForm/INSERT_FORM_TYPE_SUB_ITEM", {
         type_sub_item: "",
       });
+      this.$store.dispatch("ContractForm/onChangeAdminFee");
     },
   },
   methods: {

@@ -1,7 +1,8 @@
 import axios from "axios";
 import moment from "moment";
+import numberToWords from "number-to-words";
 
-import { formatCurrency, numbersOnly, cleaningNumber } from "@/utils/helpers";
+import { formatCurrency, numbersOnly, terbilang } from "@/utils/helpers";
 
 const defaultForm = {
   discont: 10000,
@@ -36,6 +37,7 @@ const defaultForm = {
   comission_fee_paid_total_read: null,
   //
   admin_fee: null,
+  admin_fee_read: "Rp 10.000",
   in_text: null
 };
 
@@ -116,15 +118,12 @@ const ContractForm = {
         ]
       },
       comission_fee_paids: [],
-      admin_fee: {
-        electronic: 5000,
-        transportation: 10000,
-      }
     },
     loading: {
       table: false
     },
     settings: {
+      lang: "id", // id
       margin: {
         "electronic": 5, // 5%
         "transportation": 10, // 10%
@@ -206,10 +205,23 @@ const ContractForm = {
       state.form.comission_fee_paid_total_read = readAble;
     },
     INSERT_FORM_ADMIN_FEE(state, payload) {
-      state.form.admin_fee = payload.admin_fee;
+      // state.form.admin_fee = payload.admin_fee;
+      const numericValue = numbersOnly(payload.admin_fee);
+      const readAble = formatCurrency(payload.admin_fee, 'Rp ');
+      state.form.admin_fee = numericValue;
+      state.form.admin_fee_read = readAble;
     },
     INSERT_FORM_IN_TEXT(state, payload) {
-      state.form.in_text = payload.in_text;
+      let interestFreeLoan = state.form.interest_free_loan;
+      let mentionInterestFreeloan = null;
+
+      if (state.settings.lang == "id") {
+        mentionInterestFreeloan = terbilang(interestFreeLoan);
+      } else if (state.settings.lang == "eng") {
+        mentionInterestFreeloan = numberToWords.toWords(interestFreeLoan);
+      }
+
+      state.form.in_text = mentionInterestFreeloan;
     },
     CLEAR_FORM(state, payload) {
       state.form = { ...defaultForm };
@@ -256,6 +268,11 @@ const ContractForm = {
 
       // context.state.form.comission_fee_paid_total = getComissionFeePaidTotal;
       context.commit("INSERT_FORM_COMISSION_FEE_PAID_TOTAL", { comission_fee_paid_total: getComissionFeePaidTotal });
+    },
+    onChangeAdminFee: (context, payload) => {
+      const getAdminFee = formatCurrency(context.state.settings.admin_fee[context.state.form.type_item], "Rp. ");
+
+      context.commit("INSERT_FORM_ADMIN_FEE", { admin_fee: getAdminFee });
     },
   }
 };
