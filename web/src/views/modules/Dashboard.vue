@@ -1,11 +1,6 @@
 <template>
   <div class="container-fluid p-0">
-    <h1 class="h3 mb-3">
-      <strong>Analytics</strong>
-      Dashboard
-      <br />
-      <!-- <b-button variant="info" size="sm" @click="onSend">send</b-button> -->
-    </h1>
+    <h5>Analytics Dashboard</h5>
   </div>
 </template>
 

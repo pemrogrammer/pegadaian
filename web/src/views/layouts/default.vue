@@ -1,120 +1,55 @@
 <template>
-  <div>
-    <div class="wrapper">
-      <nav id="sidebar" class="sidebar js-sidebar">
-        <div class="sidebar-content js-simplebar">
-          <a class="sidebar-brand" :to="{ name: 'dashboard' }" @click="onClickLogo('dashboard')">
-            <span class="align-middle">PawnShop</span>
-          </a>
-
-          <ul class="sidebar-nav">
-            <li class="sidebar-header">Main</li>
-
-            <li class="sidebar-item" :class="setActive('dashboard')">
-              <b-link
-                class="sidebar-link"
-                :to="{ name: 'dashboard' }"
-                @click="onClickMenu('dashboard')"
-              >
-                <i class="align-middle" data-feather="sliders"></i>
-                <span class="align-middle">Dashboard</span>
-              </b-link>
-            </li>
-            <li class="sidebar-item" :class="setActive('contractForm')">
-              <b-link
-                class="sidebar-link"
-                @click="onClickMenu('contractForm')"
-                :to="{ name: 'contractForm' }"
-              >
-                <i class="align-middle" data-feather="clipboard"></i>
-                <span class="align-middle">Make a Contract</span>
-              </b-link>
-            </li>
-            <li class="sidebar-item" :class="setActive('contractTable')">
-              <b-link
-                class="sidebar-link"
-                @click="onClickMenu('contractTable')"
-                :to="{ name: 'contractTable' }"
-              >
-                <i class="align-middle" data-feather="database"></i>
-                <span class="align-middle">Data Contract</span>
-              </b-link>
-            </li>
-            <li class="sidebar-header">Master</li>
-            <!-- <li class="sidebar-item" :class="setActive('customerData')">
-              <b-link
-                class="sidebar-link"
-                @click="onClickMenu('customerData')"
-                :to="{ name: 'customerData' }"
-              >
-                <i class="align-middle" data-feather="persons"></i>
-                <span class="align-middle">Data Customer</span>
-              </b-link>
-            </li>-->
-          </ul>
-        </div>
-      </nav>
-      <div class="main">
-        <nav class="navbar navbar-expand navbar-light navbar-bg">
-          <a class="sidebar-toggle js-sidebar-toggle">
-            <i class="hamburger align-self-center"></i>
-          </a>
-
-          <div class="navbar-collapse collapse">
-            <ul class="navbar-nav navbar-align">
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
-                  href="#"
-                  data-bs-toggle="dropdown"
+  <b-row class="base-space">
+    <b-col col md="2">
+      <el-row class="tac">
+        <el-col>
+          <h3 class="title-menu">Menu</h3>
+          <el-menu
+            default-active="1"
+            class="el-menu-vertical-demo vertical-menu"
+            @open="handleOpen"
+            @close="handleClose"
+          >
+            <el-menu-item index="1">
+              <b-link :to="{ name: 'dashboard' }" @click="onClickMenu('dashboard')">
+                <svg
+                  viewBox="0 0 16 16"
+                  class="page style-icon"
+                  style="width: 18px; height: 18px; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0; backface-visibility: hidden;"
                 >
-                  <i class="align-middle" data-feather="settings"></i>
-                </a>
-
-                <a
-                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
-                  href="#"
-                  data-bs-toggle="dropdown"
+                  <path fill="none" d="M0 0h24v24H0V0z" />
+                  <path
+                    d="M4 13h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zm0 8h6c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1zm10 0h6c.55 0 1-.45 1-1v-8c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1zM13 4v4c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1h-6c-.55 0-1 .45-1 1z"
+                  />
+                </svg>
+                <span style="color: inherit;">Dashboard</span>
+              </b-link>
+            </el-menu-item>
+            <el-menu-item index="2">
+              <b-link :to="{ name: 'contractForm' }" @click="onClickMenu('contractForm')">
+                <svg
+                  viewBox="0 0 16 16"
+                  class="page style-icon"
+                  style="width: 18px; height: 18px; fill: rgba(55, 53, 47, 0.45); flex-shrink: 0; backface-visibility: hidden;"
                 >
-                  <!-- <img
-                    src="img/avatars/avatar.jpg"
-                    class="avatar img-fluid rounded me-1"
-                    alt="Charles Hall"
-                  />-->
-                  <span class="text-dark">{{ nameUser }}</span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item" href="pages-profile.html">
-                    <i class="align-middle me-1" data-feather="user"></i>
-                    Profile
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Log out</a>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
-
-        <main class="content">
-          <router-view />
-        </main>
-      </div>
-    </div>
-  </div>
+                  <path
+                    d="M4.35645 15.4678H11.6367C13.0996 15.4678 13.8584 14.6953 13.8584 13.2256V7.02539C13.8584 6.0752 13.7354 5.6377 13.1406 5.03613L9.55176 1.38574C8.97754 0.804688 8.50586 0.667969 7.65137 0.667969H4.35645C2.89355 0.667969 2.13477 1.44043 2.13477 2.91016V13.2256C2.13477 14.7021 2.89355 15.4678 4.35645 15.4678ZM4.46582 14.1279C3.80273 14.1279 3.47461 13.7793 3.47461 13.1436V2.99219C3.47461 2.36328 3.80273 2.00781 4.46582 2.00781H7.37793V5.75391C7.37793 6.73145 7.86328 7.20312 8.83398 7.20312H12.5186V13.1436C12.5186 13.7793 12.1836 14.1279 11.5205 14.1279H4.46582ZM8.95703 6.02734C8.67676 6.02734 8.56055 5.9043 8.56055 5.62402V2.19238L12.334 6.02734H8.95703ZM10.4336 9.00098H5.42969C5.16992 9.00098 4.98535 9.19238 4.98535 9.43164C4.98535 9.67773 5.16992 9.86914 5.42969 9.86914H10.4336C10.6797 9.86914 10.8643 9.67773 10.8643 9.43164C10.8643 9.19238 10.6797 9.00098 10.4336 9.00098ZM10.4336 11.2979H5.42969C5.16992 11.2979 4.98535 11.4893 4.98535 11.7354C4.98535 11.9746 5.16992 12.1592 5.42969 12.1592H10.4336C10.6797 12.1592 10.8643 11.9746 10.8643 11.7354C10.8643 11.4893 10.6797 11.2979 10.4336 11.2979Z"
+                  />
+                </svg>
+                <span>Contract</span>
+              </b-link>
+            </el-menu-item>
+          </el-menu>
+        </el-col>
+      </el-row>
+    </b-col>
+    <b-col cols>
+      <router-view></router-view>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
-import feather from "feather-icons";
-
-require("@/assets/css/app-theme.css");
-
-document.addEventListener("DOMContentLoaded", () => {
-  feather.replace();
-});
-
-window.feather = feather;
-
 export default {
   data() {
     return {
@@ -124,23 +59,7 @@ export default {
     };
   },
   mounted() {
-    const script = document.createElement("script");
-    script.src = "/js/app-theme.js";
-    document.head.appendChild(script);
-
-    const sidebarElement = document.getElementsByClassName("js-sidebar")[0];
-    const sidebarToggleElement =
-      document.getElementsByClassName("js-sidebar-toggle")[0];
-
-    if (sidebarElement && sidebarToggleElement) {
-      sidebarToggleElement.addEventListener("click", () => {
-        sidebarElement.classList.toggle("collapsed");
-
-        sidebarElement.addEventListener("transitionend", () => {
-          window.dispatchEvent(new Event("resize"));
-        });
-      });
-    }
+    //
   },
   methods: {
     onClickMenu(nameMenu) {
@@ -150,6 +69,12 @@ export default {
       this.nameMenu = nameMenu;
 
       this.$router.push({ name: "dashboard" });
+    },
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
     },
     setActive(nameMenu) {
       return this.nameMenu == nameMenu ? "active" : "";
@@ -165,5 +90,111 @@ export default {
 
 .content {
   padding-bottom: 24rem;
+}
+
+.base-space {
+  padding-top: 20px;
+}
+
+.title-menu {
+  -webkit-text-size-adjust: 100%;
+  fill: currentcolor;
+  line-height: 1.5;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  -webkit-font-smoothing: auto;
+  pointer-events: auto;
+  user-select: none;
+  cursor: pointer;
+  font-size: 20px;
+  outline: 0;
+  box-sizing: border-box;
+  color: rgb(55, 53, 47);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 20px;
+}
+
+.vertical-menu {
+  -webkit-text-size-adjust: 100%;
+  fill: currentcolor;
+  line-height: 1.5;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  -webkit-font-smoothing: auto;
+  color: rgba(25, 23, 17, 0.6);
+  font-weight: 500;
+  pointer-events: auto;
+  user-select: none;
+  cursor: pointer;
+  outline: 0;
+  box-sizing: border-box;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  min-height: 27px;
+  padding: 2px 10px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.style-icon {
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  -webkit-font-smoothing: auto;
+  font-weight: 500;
+  pointer-events: auto;
+  color: inherit;
+  font-size: 14px;
+  user-select: none;
+  cursor: pointer;
+  outline: 0;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  fill: rgba(55, 53, 47, 0.45);
+  flex-shrink: 0;
+  backface-visibility: hidden;
+  margin-left: -3px;
+  margin-right: 4px;
+}
+
+a {
+  color: inherit !important;
+}
+
+.el-menu-item,
+.el-submenu__title {
+  -webkit-text-size-adjust: 100%;
+  fill: currentcolor;
+  line-height: 1.5;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  -webkit-font-smoothing: auto;
+  font-weight: 500;
+  pointer-events: auto;
+  color: inherit;
+  user-select: none;
+  cursor: pointer;
+  outline: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+  min-height: 27px;
+  padding: 2px 10px 2px 19px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  border-radius: 3px;
+  line-height: 0px !important;
 }
 </style>

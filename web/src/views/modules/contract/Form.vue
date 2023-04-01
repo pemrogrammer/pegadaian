@@ -23,7 +23,7 @@
       </b-card>
     </div>
 
-    <FormConfirmData />
+    <ConfirmData />
   </div>
 </template>
 
@@ -32,8 +32,6 @@
 import PawnedItem from "@/views/modules/contract/FormPawnedItem";
 import CustomerData from "@/views/modules/contract/FormCustomerData";
 import ConfirmData from "@/views/modules/contract/FormConfirmData";
-import FormConfirmData from "./FormConfirmData.vue";
-
 export default {
   data() {
     return {
@@ -44,7 +42,7 @@ export default {
     PawnedItem,
     CustomerData,
     ConfirmData,
-    FormConfirmData,
+    ConfirmData,
   },
   computed: {
     tab_active() {
