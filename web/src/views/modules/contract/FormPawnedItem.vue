@@ -1,7 +1,7 @@
 <template>
   <div>
     <br />
-    <h3>Time</h3>
+    <h4>Time</h4>
     <hr />
     <b-row>
       <b-col col sm="12" md="3">
@@ -49,7 +49,7 @@
     </b-row>
     <br />
     <br />
-    <h3>Pawned Items</h3>
+    <h4>Pawned Items</h4>
     <hr />
     <b-row>
       <b-col col sm="12" md="3">

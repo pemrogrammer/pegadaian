@@ -1,7 +1,7 @@
 <template>
-  <b-row class="base-space">
-    <b-col col md="2">
-      <el-row class="tac">
+  <b-row class="space-base">
+    <b-col col md="2" class="side-bar">
+      <el-row>
         <el-col>
           <h3 class="title-menu">Menu</h3>
           <el-menu
@@ -43,7 +43,7 @@
         </el-col>
       </el-row>
     </b-col>
-    <b-col cols>
+    <b-col col md="10" class="space-content">
       <router-view></router-view>
     </b-col>
   </b-row>
@@ -92,8 +92,13 @@ export default {
   padding-bottom: 24rem;
 }
 
-.base-space {
-  padding-top: 20px;
+.space-base {
+  height: 100% !important;
+}
+
+.space-content {
+  padding-right: 235px;
+  padding-top: 15px;
 }
 
 .title-menu {
@@ -170,11 +175,21 @@ a {
   color: inherit !important;
 }
 
+.el-menu {
+  border-right: solid 0px !important;
+  list-style: none;
+  position: relative;
+  margin: 0;
+  padding-left: 0;
+  background-color: #fbfbfa !important;
+}
+
 .el-menu-item,
 .el-submenu__title {
   -webkit-text-size-adjust: 100%;
   fill: currentcolor;
   line-height: 1.5;
+  height: 10px !important;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
     "Segoe UI Symbol";
@@ -196,5 +211,25 @@ a {
   margin-bottom: 1px;
   border-radius: 3px;
   line-height: 0px !important;
+  background-color: #fbfbfa;
+}
+
+.side-bar {
+  padding-top: 20px;
+  -webkit-text-size-adjust: 100%;
+  fill: currentcolor;
+  line-height: 1.5;
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  -webkit-font-smoothing: auto;
+  cursor: default;
+  pointer-events: none;
+  outline: 0;
+  box-sizing: border-box;
+  color: rgba(25, 23, 17, 0.6);
+  font-weight: 500;
+  padding-right: 0px;
+  background-color: #fbfbfa;
 }
 </style>

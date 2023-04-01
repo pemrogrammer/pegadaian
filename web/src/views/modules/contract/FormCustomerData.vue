@@ -1,7 +1,7 @@
 <template>
   <div>
     <br />
-    <h3>Data Customer</h3>
+    <h4>Data Customer</h4>
     <hr />
     <b-row>
       <b-col col sm="12" md="3">
