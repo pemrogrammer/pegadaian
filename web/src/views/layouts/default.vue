@@ -3,11 +3,7 @@
     <div class="wrapper">
       <nav id="sidebar" class="sidebar js-sidebar">
         <div class="sidebar-content js-simplebar">
-          <a
-            class="sidebar-brand"
-            :to="{ name: 'dashboard' }"
-            @click="onClickLogo('dashboard')"
-          >
+          <a class="sidebar-brand" :to="{ name: 'dashboard' }" @click="onClickLogo('dashboard')">
             <span class="align-middle">PawnShop</span>
           </a>
 
@@ -165,5 +161,9 @@ export default {
 <style lang="scss">
 .cursor-pointer {
   cursor: pointer;
+}
+
+.content {
+  padding-bottom: 24rem;
 }
 </style>

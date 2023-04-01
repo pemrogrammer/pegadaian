@@ -10,20 +10,26 @@
         </b-form-group>
       </b-col>
       <b-col col sm="12" md="2">
-        <b-form-group label="Term Of Contract" label-for="term_contract">
+        <b-form-group label="Time of Periode" label-for="time_period">
           <VueSelect
-            id="term_contract"
+            id="time_period"
             class="cursor-pointer"
+<<<<<<< HEAD
             v-model="term_contract"
             placeholder="Pilih Departemen"
             :options="getOptionTermContracts"
+=======
+            v-model="time_period"
+            placeholder="choose time periode"
+            :options="getOptionTimePeriodes"
+>>>>>>> 5249e4bf29f6179e9008617123153ed8479187de
             :reduce="(data) => data.value"
             label="label"
             searchable
           />
         </b-form-group>
       </b-col>
-      <b-col col sm="12" md="2">
+      <b-col col sm="12" md="2" style="padding-right: 0px">
         <b-form-group label="Date Start Contract" label-for="date_start">
           <DatePicker
             id="date_start"
@@ -34,7 +40,7 @@
           />
         </b-form-group>
       </b-col>
-      <b-col col sm="12" md="2">
+      <b-col col sm="12" md="3">
         <b-form-group label="Due Date of the Contract" label-for="date_end">
           <DatePicker
             id="date_end"
@@ -140,12 +146,74 @@
       </b-col>
       <b-col col sm="12" md="3">
         <!-- Marhun Bih -->
-        <b-form-group label="interest-free loan" label-for="interest_free_loan">
+        <b-form-group label="Interest-free loan" label-for="interest_free_loan">
           <b-form-input
             v-model="interest_free_loan"
             id="interest_free_loan"
             name="interest_free_loan"
           />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- opsi pembayaran -->
+        <b-form-group label="Payment Method" label-for="payment_method">
+          <VueSelect
+            id="payment_method"
+            class="cursor-pointer"
+            v-model="payment_method"
+            placeholder="choose time periode"
+            :options="getOptionPaymentMethods"
+            :reduce="(data) => data.value"
+            label="label"
+            searchable
+          />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- biaya titip -->
+        <b-form-group label="Commission Fee" label-for="deposit_fee">
+          <b-form-input v-model="deposit_fee" id="deposit_fee" name="deposit_fee" disabled />
+        </b-form-group>
+      </b-col>
+    </b-row>
+    <br />
+    <b-row>
+      <b-col col sm="12" md="3">
+        <!-- Biaya Titip yang Dibayar -->
+        <b-form-group label="Deposit Fee Paided" label-for="deposit_fee_paid">
+          <VueSelect
+            id="deposit_fee_paid"
+            class="cursor-pointer"
+            v-model="deposit_fee_paid"
+            placeholder="choose deposit paid"
+            :options="getOptionDepositFeePaids"
+            :reduce="(data) => data.value"
+            label="label"
+            searchable
+          />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- Jumlah Biaya Titip yang Dibayar -->
+        <b-form-group label="Total Deposit Fee Paided" label-for="deposit_fee_paid_total">
+          <b-form-input
+            v-model="deposit_fee_paid_total"
+            id="deposit_fee_paid_total"
+            name="deposit_fee_paid_total"
+            disabled
+          />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- Biaya Admin -->
+        <b-form-group label="Admin Fee" label-for="admin_fee">
+          <b-form-input v-model="admin_fee" id="admin_fee" name="admin_fee" disabled />
+        </b-form-group>
+      </b-col>
+      <b-col col sm="12" md="3">
+        <!-- Terbilang -->
+        <b-form-group label="In Text" label-for="in_text">
+          <b-form-input v-model="in_text" id="in_text" name="in_text" disabled />
         </b-form-group>
       </b-col>
     </b-row>
@@ -180,12 +248,19 @@ export default {
     VueSelect,
     DatePicker,
   },
+  mounted() {
+    // option.deposit_fee_paids
+    this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
+  },
   computed: {
     getForm() {
       return this.$store.state.ContractForm.form;
     },
-    getOptionTermContracts() {
-      return this.$store.state.ContractForm.options.term_contracts;
+    getOptionTimePeriodes() {
+      return this.$store.state.ContractForm.options.time_periods;
+    },
+    getOptionPaymentMethods() {
+      return this.$store.state.ContractForm.options.payment_methods;
     },
     getOptionTypeItems() {
       return this.$store.state.ContractForm.options.type_items;
@@ -194,6 +269,9 @@ export default {
       return this.$store.state.ContractForm.options.type_sub_items[
         this.type_item
       ];
+    },
+    getOptionDepositFeePaids() {
+      return this.$store.state.ContractForm.options.deposit_fee_paids;
     },
     number_id: {
       get() {
@@ -205,13 +283,14 @@ export default {
         });
       },
     },
-    term_contract: {
+    time_period: {
       get() {
-        return this.$store.state.ContractForm.form.term_contract;
+        return this.$store.state.ContractForm.form.time_period;
       },
       set(value) {
-        this.$store.commit("ContractForm/INSERT_FORM_TERM_CONTRACT", {
-          term_contract: value,
+        // console.info(value);
+        this.$store.commit("ContractForm/INSERT_FORM_TIME_PERIOD", {
+          time_period: value,
         });
       },
     },
@@ -305,9 +384,10 @@ export default {
         });
       },
     },
+    // taksiran marhun
     asset_valuation: {
       get() {
-        return this.$store.state.ContractForm.form.asset_valuation;
+        return this.$store.state.ContractForm.form.read_asset_valuation;
       },
       set(value) {
         this.$store.commit("ContractForm/INSERT_FORM_ASSET_VALUATION", {
@@ -315,9 +395,10 @@ export default {
         });
       },
     },
+    // Marhun Bih
     interest_free_loan: {
       get() {
-        return this.$store.state.ContractForm.form.interest_free_loan;
+        return this.$store.state.ContractForm.form.read_interest_free_loan;
       },
       set(value) {
         this.$store.commit("ContractForm/INSERT_FORM_INTEREST_FREE_LOAN", {
@@ -325,13 +406,87 @@ export default {
         });
       },
     },
+    payment_method: {
+      get() {
+        return this.$store.state.ContractForm.form.payment_method;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_PAYMENT_METHOD", {
+          payment_method: value,
+        });
+      },
+    },
+    deposit_fee: {
+      get() {
+        return this.$store.state.ContractForm.form.deposit_fee;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE", {
+          deposit_fee: value,
+        });
+      },
+    },
+    deposit_fee_paid: {
+      get() {
+        return this.$store.state.ContractForm.form.deposit_fee_paid;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE_PAID", {
+          deposit_fee_paid: value,
+        });
+      },
+    },
+    deposit_fee_paid_total: {
+      get() {
+        return this.$store.state.ContractForm.form.deposit_fee_paid_total;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_DEPOSIT_FEE_PAID_TOTAL", {
+          deposit_fee_paid_total: value,
+        });
+      },
+    },
+    admin_fee: {
+      get() {
+        return this.$store.state.ContractForm.form.admin_fee;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_ADMIN_FEE", {
+          admin_fee: value,
+        });
+      },
+    },
+    in_text: {
+      get() {
+        return this.$store.state.ContractForm.form.in_text;
+      },
+      set(value) {
+        this.$store.commit("ContractForm/INSERT_FORM_IN_TEXT", {
+          in_text: value,
+        });
+      },
+    },
   },
   watch: {
-    term_contract(value, oldValue) {
-      this.$store.dispatch("ContractForm/onChangeDateEnd");
-    },
     date_start(value) {
       this.$store.dispatch("ContractForm/onChangeDateEnd");
+    },
+    time_period(value, oldValue) {
+      this.$store.dispatch("ContractForm/onChangeDateEnd");
+      // option.deposit_fee_paids
+      this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
+    },
+    payment_method(value, oldValue) {
+      // option.deposit_fee_paids
+      this.$store.dispatch("ContractForm/onChangeOptionDepositFeePaids");
+    },
+    interest_free_loan(value, oldValue) {
+      // option.deposit_fee_paids
+      this.$store.dispatch("ContractForm/onChangeDepositFee");
+      this.$store.dispatch("ContractForm/onChangeDepositFeePaidTotal");
+    },
+    deposit_fee_paid(value, oldValue) {
+      this.$store.dispatch("ContractForm/onChangeDepositFeePaidTotal");
     },
     type_item(value) {
       this.$store.commit("ContractForm/INSERT_FORM_TYPE_SUB_ITEM", {
