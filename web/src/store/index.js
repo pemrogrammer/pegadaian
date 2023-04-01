@@ -2,13 +2,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 // module store
-import ContractForm from './ContractForm';
+import Contract from './Contract';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
-    ContractForm: ContractForm,
+    Contract: Contract,
   },
   state: {
     user: {},

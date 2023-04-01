@@ -18,17 +18,12 @@
             >
               <CustomerData />
             </b-tab>
-            <b-tab
-              title="Confirm Data"
-              :active="onActiveTab('confirm')"
-              :disabled="!onActiveTab('confirm')"
-            >
-              <ConfirmData />
-            </b-tab>
           </b-tabs>
         </b-card-header>
       </b-card>
     </div>
+
+    <FormConfirmData />
   </div>
 </template>
 
@@ -37,6 +32,7 @@
 import PawnedItem from "@/views/modules/contract/FormPawnedItem";
 import CustomerData from "@/views/modules/contract/FormCustomerData";
 import ConfirmData from "@/views/modules/contract/FormConfirmData";
+import FormConfirmData from "./FormConfirmData.vue";
 
 export default {
   data() {
@@ -48,10 +44,11 @@ export default {
     PawnedItem,
     CustomerData,
     ConfirmData,
+    FormConfirmData,
   },
   computed: {
     tab_active() {
-      return this.$store.state.ContractForm.tab_active;
+      return this.$store.state.Contract.tab_active;
     },
   },
   methods: {

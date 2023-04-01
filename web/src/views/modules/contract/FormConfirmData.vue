@@ -1,53 +1,51 @@
 <template>
-  <div>
+  <!-- START MODAL FORM CREATE -->
+  <b-modal
+    id="contract_confirm_data"
+    ref="contract_confirm_data"
+    size="xl"
+    :title="getTitleForm"
+    hide-footer
+  >
+    <b-row>
+      <b-col col md="12">confirm data</b-col>
+    </b-row>
     <br />
-    <h3>Time</h3>
     <hr />
     <b-row>
-      <b-col col sm="12" md="3">
-        <b-form-group label="Number ID" label-for="number_id">
-          <!-- <b-form-input v-model="number_id" id="number_id" name="number_id" disabled /> -->
-        </b-form-group>
+      <b-col>
+        <b-button variant="info" @click="onCloseModal()">Tutup</b-button>
+        <b-button
+          variant="success"
+          @click="onSend()"
+          :disabled="is_loading"
+          style="margin-left: 30px"
+        >Simpan</b-button>
+        <span v-if="is_loading">Loading...</span>
       </b-col>
     </b-row>
-    <b-row style="margin-top: 40px">
-      <b-col cols></b-col>
-      <b-col col md="2" style="text-align-last: right;">
-        <!-- <b-button class variant="danger" style="margin-right: 20px;" @click="onClearForm()">Batal</b-button> -->
-        <b-button
-          class
-          variant="success"
-          @click="onChangeTab('customer')"
-          :disabled="is_loading"
-        >Prev</b-button>
-        <b-button
-          class
-          variant="success"
-          @click="onConfirmData()"
-          :disabled="is_loading"
-          style="margin-left: 20px"
-        >Kirim</b-button>
-      </b-col>
-    </b-row>
-  </div>
+  </b-modal>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      getTitleForm: "Confirm Data",
       is_loading: false,
     };
   },
   methods: {
     onChangeTab(tab_active) {
-      this.$store.commit("ContractForm/UPDATE_TAB_ACTIVE", {
+      this.$store.commit("Contract/UPDATE_TAB_ACTIVE", {
         tab_active: tab_active,
       });
     },
     onConfirmData() {
       console.info("confirm data");
     },
+    onCloseModal() {},
+    onSend() {},
   },
 };
 </script>
