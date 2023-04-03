@@ -44,6 +44,9 @@ export default {
     ConfirmData,
     ConfirmData,
   },
+  mounted() {
+    this.$bvModal.show("contract_confirm_data");
+  },
   computed: {
     tab_active() {
       return this.$store.state.Contract.tab_active;

@@ -10,7 +10,7 @@
         </b-form-group>
       </b-col>
       <b-col col sm="12" md="3">
-        <b-form-group label="Gender" v-slot="{ ariaDescribedby }">
+        <!-- <b-form-group label="Gender" v-slot="{ ariaDescribedby }">
           <b-form-radio
             v-model="gender"
             :aria-describedby="ariaDescribedby"
@@ -23,6 +23,9 @@
             name="some-radios"
             value="female"
           >Fimale</b-form-radio>
+        </b-form-group>-->
+        <b-form-group label="Gender" label-for="gender">
+          <b-form-select id="gender" name="gender" v-model="gender" :options="getOptionGenders"></b-form-select>
         </b-form-group>
       </b-col>
       <b-col col sm="12" md="3">
@@ -85,6 +88,9 @@ export default {
     };
   },
   computed: {
+    getOptionGenders() {
+      return this.$store.state.Contract.options.genders;
+    },
     name: {
       get() {
         return this.$store.state.Contract.form.customer.name;

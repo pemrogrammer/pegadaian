@@ -131,12 +131,16 @@ const Contract = {
         ]
       },
       comission_fee_paids: [],
+      genders: [
+        { value: "man", text: 'Man' },
+        { value: "female", text: 'Female' },
+      ],
     },
     loading: {
       table: false
     },
     settings: {
-      lang: "id", // id
+      lang: "eng", // eng, id
       margin: {
         "electronic": 5, // 5%
         "transportation": 10, // 10%
@@ -319,7 +323,14 @@ const Contract = {
 
       context.commit("INSERT_FORM_ADMIN_FEE", { admin_fee: getAdminFee });
     },
-  }
+  },
+  getters: {
+    getDateReadable: state => date => {
+      moment.locale(state.settings.lang); // set locale by language
+      // return moment(date).format('dddd, D MMMM YYYY, h:mm:ss a');
+      return moment(date).format('dddd, D MMMM YYYY');
+    }
+  },
 };
 
 const _conditionComissionFeePaid = ({ time_period, payment_method, }) => {

@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 // layouts
-import Default from "@/views/layouts/default.vue";
+import Default from "@/views/layouts/Default";
 
 // main modules
 import Dashboard from "@/views/modules/Dashboard.vue";
